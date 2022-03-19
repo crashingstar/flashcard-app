@@ -83,5 +83,6 @@ Initial interval of algorithm is set at 1 day and 6 days. For anki, control over
 
 Both ease factor and interval is updated and stored after the card is used each time
 
-ref: https://www.supermemo.com/en/archives1990-2015/english/ol/sm2
+ref:  
+https://www.supermemo.com/en/archives1990-2015/english/ol/sm2  
 https://faqs.ankiweb.net/what-spaced-repetition-algorithm.html
