@@ -68,3 +68,20 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+### SM-2 Algorithm
+
+SM-2 is the algorithm used to calculate the interval between repetitions
+
+![image](interval_formula.png)
+
+I(n) is the interval(in-days) after n-th repetition  
+EF - easiness factor  
+q = quality of response
+
+Initial interval of algorithm is set at 1 day and 6 days. For anki, control over initial interval can be modified
+
+Both ease factor and interval is updated and stored after the card is used each time
+
+ref: https://www.supermemo.com/en/archives1990-2015/english/ol/sm2
+https://faqs.ankiweb.net/what-spaced-repetition-algorithm.html
