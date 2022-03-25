@@ -76,12 +76,22 @@ SM-2 is the algorithm used to calculate the interval between repetitions
 ![image](interval_formula.png)
 
 I(n) is the interval(in-days) after n-th repetition  
-EF - easiness factor  
-q = quality of response
+EF - easiness factor (Starts from 2.5)
+q = quality of response (0-5)
 
 Initial interval of algorithm is set at 1 day and 6 days. For anki, control over initial interval can be modified
 
 Both ease factor and interval is updated and stored after the card is used each time
+
+| q   | Ease Factor                        |
+| --- | ---------------------------------- |
+| -   | EF - 0.8 + 0.28q-0.02q<sub>2<sub>  |
+| 0   | EF - 0.8                           |
+| 1   | EF - 0.8 + 0.28 - 0.02 = EF - 0.54 |
+| 2   | EF - 0.8 + 0.56 - 0.08 = EF -0.32  |
+| 3   | EF - 0.8 + 0.84 - 0.18 = EF - 0.14 |
+| 4   | EF - 0.8 + 1.12-0.32 = EF          |
+| 5   | EF - 0.8 + 1.4-0.5 = EF + 0.1      |
 
 ref:  
 https://www.supermemo.com/en/archives1990-2015/english/ol/sm2  
