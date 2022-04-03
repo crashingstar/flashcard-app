@@ -96,3 +96,21 @@ Both ease factor and interval is updated and stored after the card is used each 
 ref:  
 https://www.supermemo.com/en/archives1990-2015/english/ol/sm2  
 https://faqs.ankiweb.net/what-spaced-repetition-algorithm.html
+
+# APIs
+
+API uses form-data for request body.
+
+## User-related
+
+user/{route}
+
+| Type   | Action          | Sub Actions            | route           | request data                                  | Description |
+| ------ | --------------- | ---------------------- | --------------- | --------------------------------------------- | ----------- |
+| POST   | Create Account  |                        | create_user     | username,hashed_password,email                |             |
+| POST   | Login           | 1. Verify Credentials  | login           | username,hashed_password                      |             |
+|        |                 | 2. Update last login   |                 |                                               |             |
+| POST   | Update password | 1. Verify Credentials  | update_password | username,hashed_password, new_hashed_password |             |
+|        |                 | 2. Update new password |                 |                                               |             |
+| DELETE | Delete Account  | 1. Verify Credentials  | delete_user     | username, hashed_password                     |             |
+|        |                 | 2. Delete account/user |                 |                                               |             |
