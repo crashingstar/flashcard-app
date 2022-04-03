@@ -1,11 +1,11 @@
-DROP TABLE IF EXISTS user;
-DROP TABLE IF EXISTS deck;
 DROP TABLE IF EXISTS card;
+DROP TABLE IF EXISTS deck;
+DROP TABLE IF EXISTS user;
 
 CREATE TABLE `user` (
-  `user_id` int NOT NULL,
-  `username` varchar(45) DEFAULT NULL,
-  `password` varchar(45) DEFAULT NULL,
+  `user_id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(45) NOT NULL UNIQUE,
+  `password` varchar(45) NOT NULL,
   `user_type` varchar(45) DEFAULT NULL,
   `last_login` varchar(45) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
