@@ -4,7 +4,7 @@ import App from './App';
 import FirstComponent from './component/FirstComponent';
 import UserComponent from './component/UserComponent';
 import Login from './component/LoginComponent';
-
+import Register from './component/RegisterComponent';
 import './index.css';
 
 
@@ -16,7 +16,7 @@ ReactDOM.render(
   </div>,
   */
   <React.StrictMode>
-    <Login />
+    <Register />
   </React.StrictMode>,
   document.getElementById('root')
 );
