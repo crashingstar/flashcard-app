@@ -1,4 +1,3 @@
-import time
 from flask import Blueprint, request
 from db_connection import mysql
 from datetime import datetime

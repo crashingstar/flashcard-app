@@ -2,7 +2,7 @@
 from CardApi import card_api
 from DeckApi import deck_api
 from UserApi import user_api
-from db_connection import app,mysql
+from db_connection import app
 
 # app = Flask(__name__)
 
@@ -19,4 +19,3 @@ app.register_blueprint(user_api, url_prefix="/user")
 
 if __name__ == "__main__":
     app.run()
-
