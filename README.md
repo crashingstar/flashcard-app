@@ -103,14 +103,66 @@ API uses form-data for request body.
 
 ## User-related
 
+| Column     | Description |
+| ---------- | ----------- |
+| user_id    |             |
+| username   |             |
+| password   |             |
+| user_type  |             |
+| last_login |             |
+| email      |             |
+
 user/{route}
 
-| Type   | Action          | Sub Actions            | route           | request data                                  | Description |
-| ------ | --------------- | ---------------------- | --------------- | --------------------------------------------- | ----------- |
-| POST   | Create Account  |                        | create_user     | username,hashed_password,email                |             |
-| POST   | Login           | 1. Verify Credentials  | login           | username,hashed_password                      |             |
-|        |                 | 2. Update last login   |                 |                                               |             |
-| POST   | Update password | 1. Verify Credentials  | update_password | username,hashed_password, new_hashed_password |             |
-|        |                 | 2. Update new password |                 |                                               |             |
-| DELETE | Delete Account  | 1. Verify Credentials  | delete_user     | username, hashed_password                     |             |
-|        |                 | 2. Delete account/user |                 |                                               |             |
+| Type   | Action          | Sub Actions            | route           | request data                                   | Description |
+| ------ | --------------- | ---------------------- | --------------- | ---------------------------------------------- | ----------- |
+| POST   | Create Account  |                        | create_user     | username,hashed_password,email                 |             |
+| POST   | Login           | 1. Verify Credentials  | login           | username,hashed_password                       |             |
+|        |                 | 2. Update last login   |                 |                                                |             |
+| POST   | Update password | 1. Verify Credentials  | update_password | username, hashed_password, new_hashed_password |             |
+|        |                 | 2. Update new password |                 |                                                |             |
+| DELETE | Delete Account  | 1. Verify Credentials  | delete_user     | username, hashed_password                      |             |
+|        |                 | 2. Delete account/user |                 |                                                |             |
+
+## Deck-related
+
+| Column        | Description     |
+| ------------- | --------------- |
+| deck_id       | auto-generated  |
+| deck_name     |                 |
+| user_id       |                 |
+| accessibility | default private |
+| date_created  |                 |
+| last_updated  |                 |
+| total_cards   |                 |
+| cards_due     |                 |
+
+deck/{route}
+
+| Type   | Action                       | Sub Actions            | route                | request data                               | Description                              |
+| ------ | ---------------------------- | ---------------------- | -------------------- | ------------------------------------------ | ---------------------------------------- |
+| POST   | Create Deck                  |                        | create_deck          | deck_name,user_id                          |                                          |
+| POST   | Read Deck details            |                        | get_deck_details     |                                            |                                          |
+| POST   | Read All Deck info from user |                        | get_all_deck_details |                                            | For displaying on homepage, get all data |
+| POST   | Update Deck Details          | 1. Verify Credentials  | update_deck_details  |                                            | Verify Deck belongs to user              |
+|        |                              | 2. Update deck details |                      | deck_name,user_id,last_updated,total_cards |                                          |
+| POST   | Refresh card_due             | 1. Verify Credentials  | refresh_deck         |                                            | Update cards_due count                   |
+| DELETE | Delete Deck                  | 1. Verify Credentials  | delete_deck          |                                            |                                          |
+|        |                              | 2. Delete deck         |                      |                                            |                                          |
+| DELETE | Delete All user Deck         | 1. Verify Credentials  | delete_all_user_deck |                                            |                                          |
+
+## Card-related
+
+| Column        | Description    |
+| ------------- | -------------- |
+| card_id       | auto-generated |
+| deck_id       |                |
+| front         |                |
+| back          |                |
+| date_created  |                |
+| last_accessed |                |
+| last_correct  |                |
+| interval      |                |
+| ease_factor   |                |
+
+card/{route}
