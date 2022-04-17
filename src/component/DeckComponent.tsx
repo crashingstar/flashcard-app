@@ -1,5 +1,5 @@
 import * as React from "react";
-export default class LoginComponent extends React.Component <{}> {
+export default class Deck extends React.Component <{}> {
   render() {
     return (
       <div>

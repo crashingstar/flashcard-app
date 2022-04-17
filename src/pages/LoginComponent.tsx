@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
 import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -190,6 +191,7 @@ const Login = () => {
           </Button>
         </CardActions>
       </Card>
+      <Link to='/register'>Register</Link>
     </form>
     </div>
   );
