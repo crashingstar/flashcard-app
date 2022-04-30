@@ -78,6 +78,7 @@ SM-2 is the algorithm used to calculate the interval between repetitions
 I(n) is the interval(in-days) after n-th repetition  
 EF - easiness factor (Starts from 2.5)
 q = quality of response (0-5)
+if EF < 1.3, let it be 1.3
 
 Initial interval of algorithm is set at 1 day and 6 days. For anki, control over initial interval can be modified
 
@@ -92,6 +93,17 @@ Both ease factor and interval is updated and stored after the card is used each 
 | 3   | EF - 0.8 + 0.84 - 0.18 = EF - 0.14 |
 | 4   | EF - 0.8 + 1.12-0.32 = EF          |
 | 5   | EF - 0.8 + 1.4-0.5 = EF + 0.1      |
+
+### Anki's modification
+
+| q   |       | Ease Factor    | Interval                                                            |
+| --- | ----- | -------------- | ------------------------------------------------------------------- |
+| 0   | Again | EF - 0.2       | I(n) = I(n-1) \* 0 --> Resets to 1 after minium interval is applied |
+| 1   | Hard  | EF - 0.15      | I(n) = I(n-1) \* 1.2(default hard interval)                         |
+| 2   | Good  | EF (No change) | I(n) = I(n-1) \* EF (Note that min EF is 1.3)                       |
+| 3   | Easy  | EF + 0.15      | I(n) = I(n-1) \* EF \* 1.3(default easy bonus)                      |
+
+https://docs.ankiweb.net/deck-options.html#easy-bonus
 
 ref:  
 https://www.supermemo.com/en/archives1990-2015/english/ol/sm2  
@@ -139,30 +151,40 @@ user/{route}
 
 deck/{route}
 
-| Type   | Action                       | Sub Actions            | route                | request data                               | Description                              |
-| ------ | ---------------------------- | ---------------------- | -------------------- | ------------------------------------------ | ---------------------------------------- |
-| POST   | Create Deck                  |                        | create_deck          | deck_name,user_id                          |                                          |
-| POST   | Read Deck details            |                        | get_deck_details     |                                            |                                          |
-| POST   | Read All Deck info from user |                        | get_all_deck_details |                                            | For displaying on homepage, get all data |
-| POST   | Update Deck Details          | 1. Verify Credentials  | update_deck_details  |                                            | Verify Deck belongs to user              |
-|        |                              | 2. Update deck details |                      | deck_name,user_id,last_updated,total_cards |                                          |
-| POST   | Refresh card_due             | 1. Verify Credentials  | refresh_deck         |                                            | Update cards_due count                   |
-| DELETE | Delete Deck                  | 1. Verify Credentials  | delete_deck          |                                            |                                          |
-|        |                              | 2. Delete deck         |                      |                                            |                                          |
-| DELETE | Delete All user Deck         | 1. Verify Credentials  | delete_all_user_deck |                                            |                                          |
+| Type   | Action                       | Sub Actions            | route                | Mandatory request data | Description                              | Status                                             |
+| ------ | ---------------------------- | ---------------------- | -------------------- | ---------------------- | ---------------------------------------- | -------------------------------------------------- |
+| POST   | Create Deck                  |                        | create_deck          | deck_name,user_id      |                                          | Done                                               |
+| POST   | Read Deck details            |                        | get_deck_details     |                        |                                          | Done                                               |
+| POST   | Read All Deck info from user |                        | get_all_deck_details |                        | For displaying on homepage, get all data | Done                                               |
+| POST   | Update Deck Details          | 1. Verify Credentials  | update_deck_details  | deck_id, user_id       | Verify Deck belongs to user              | Done                                               |
+|        |                              | 2. Update deck details |                      |                        |                                          |                                                    |
+| POST   | Refresh card_due             | 1. Verify Credentials  | refresh_deck         |                        | Update cards_due count                   | To-do after card apis. Maybe can trigger on log-in |
+| DELETE | Delete Deck                  | 1. Verify Credentials  | delete_deck          | deck_id, user_id       |                                          | Done                                               |
+|        |                              | 2. Delete deck         |                      |                        |                                          |                                                    |
+| DELETE | Delete All user Deck         | 1. Verify Credentials  | delete_all_user_deck |                        |                                          | Done                                               |
 
 ## Card-related
 
-| Column        | Description    |
-| ------------- | -------------- |
-| card_id       | auto-generated |
-| deck_id       |                |
-| front         |                |
-| back          |                |
-| date_created  |                |
-| last_accessed |                |
-| last_correct  |                |
-| interval      |                |
-| ease_factor   |                |
+| Column           | Description                           |
+| ---------------- | ------------------------------------- |
+| card_id          | auto-generated                        |
+| deck_id          |                                       |
+| front            |                                       |
+| back             |                                       |
+| date_created     |                                       |
+| last_accessed    |                                       |
+| card_status      | Either Learning or Review             |
+| learning_status  | 3 learning status - 1min, 5min, 10min |
+| interval         | In terms of days                      |
+| next_access_date | Today + interval                      |
+| ease_factor      |                                       |
 
 card/{route}
+
+| Type   | Action                     | Sub Actions           | route               | Mandatory request data                     | Description                 | Status |
+| ------ | -------------------------- | --------------------- | ------------------- | ------------------------------------------ | --------------------------- | ------ |
+| POST   | Create Flash Card          |                       | create_card         | deck_id, front, back                       |                             | Done   |
+| DELETE | Delete Flash Card          |                       | delete card         | deck_id, card_id, user_id                  |                             | Done   |
+| POST   | Update Flash Card Details  |                       | update_card_details | deck_id, card_id, user_id + data to update | Updating content            |        |
+| POST   | Update Flash Card interval |                       | update_card_details | deck_id, card_id, user_id + data to update | Updating content            |        |
+| POST   | Get Flash Card Details     | 1. Verify Credentials | update_deck_details | deck_id, user_id                           | Verify Deck belongs to user |        |

@@ -29,14 +29,16 @@ CREATE TABLE deck (
 CREATE TABLE card (
   `card_id` int  NOT NULL AUTO_INCREMENT,
   `deck_id` int,
-  `front` varchar(45) DEFAULT NULL,
-  `back` varchar(45) DEFAULT NULL,
+  `front` varchar(45),
+  `back` varchar(45),
   `date_created` varchar(45) DEFAULT NULL,
-  `last_accessed` varchar(45) DEFAULT NULL,
-  `last_correct` int DEFAULT NULL,
-  `interval` int DEFAULT NULL,
-  `ease_factor` int DEFAULT NULL,
+  `next_accessed` DATE DEFAULT NULL,
+  `card_status` varchar(45) DEFAULT "Learning",
+  `learning_status` int DEFAULT 1,
+  `interval` double DEFAULT 1,
+  `ease_factor` double DEFAULT 2.5,
   PRIMARY KEY (`card_id`),
+  UNIQUE KEY `front_deck_id_uniq` (`front`,`deck_id`),
   FOREIGN KEY (`deck_id`) REFERENCES deck(`deck_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -46,10 +48,13 @@ create procedure create_data()
 begin
 
 declare max_val int unsigned default 10;
-declare counter int unsigned default 0;
+declare counter int unsigned default 1;
   start transaction;
   while counter < max_val do
 INSERT INTO `user`( `username`, `password`,`user_type`,`email`) VALUES (CONCAT('user',counter), CONCAT('password',counter),'user', CONCAT('user',counter,'@gmail.com'));
+INSERT INTO `deck`( `deck_name`, `user_id`,`accessibility`,`date_created`) VALUES (CONCAT('deck',counter), counter,0, '2020-01-19');
+INSERT INTO `card`( `deck_id`, `front`,`back`,`date_created`) VALUES (1,CONCAT('card_front_',counter),CONCAT('card_back_',counter),CURDATE());
+
 set counter=counter+1;
   end while;
   commit;
