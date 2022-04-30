@@ -112,7 +112,7 @@ const Register = () => {
   }, [state.username, state.password]);
 
   const handleRegister = () => {
-    if (state.username != 'abc@email.com') {
+    if (state.username !== 'abc@email.com') {
       dispatch({
         type: 'registerSuccess',
         payload: 'Register Successfully'

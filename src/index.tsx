@@ -1,11 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import App from './App';
-import FirstComponent from './component/FirstComponent';
-import UserComponent from './component/UserComponent';
-import Login from './component/LoginComponent';
-import Register from './component/RegisterComponent';
-import './index.css';
 
 
 ReactDOM.render(
@@ -16,7 +11,7 @@ ReactDOM.render(
   </div>,
   */
   <React.StrictMode>
-    <Register />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );
