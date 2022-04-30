@@ -181,10 +181,10 @@ deck/{route}
 
 card/{route}
 
-| Type   | Action                     | Sub Actions           | route               | Mandatory request data                     | Description                 | Status |
-| ------ | -------------------------- | --------------------- | ------------------- | ------------------------------------------ | --------------------------- | ------ |
-| POST   | Create Flash Card          |                       | create_card         | deck_id, front, back                       |                             | Done   |
-| DELETE | Delete Flash Card          |                       | delete card         | deck_id, card_id, user_id                  |                             | Done   |
-| POST   | Update Flash Card Details  |                       | update_card_details | deck_id, card_id, user_id + data to update | Updating content            |        |
-| POST   | Update Flash Card interval |                       | update_card_details | deck_id, card_id, user_id + data to update | Updating content            |        |
-| POST   | Get Flash Card Details     | 1. Verify Credentials | update_deck_details | deck_id, user_id                           | Verify Deck belongs to user |        |
+| Type   | Action                     | Sub Actions           | route               | Mandatory request data    | Description                                       | Status |
+| ------ | -------------------------- | --------------------- | ------------------- | ------------------------- | ------------------------------------------------- | ------ |
+| POST   | Create Flash Card          |                       | create_card         | deck_id, front, back      |                                                   | Done   |
+| DELETE | Delete Flash Card          |                       | delete card         | deck_id, card_id, user_id |                                                   | Done   |
+| POST   | Update Flash Card Details  |                       | update_card_details | deck_id, card_id, user_id | Updating content                                  | Done   |
+| POST   | Update Flash Card interval |                       | update_card_details | deck_id, card_id, user_id | Updating information based on quality of response | Done   |
+| POST   | Get Flash Card Details     | 1. Verify Credentials | update_deck_details | deck_id, user_id          | Verify Deck belongs to user                       |        |

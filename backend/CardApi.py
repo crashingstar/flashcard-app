@@ -129,7 +129,6 @@ def update_card_interval():
                 # if card_status == Review, new_interval = interval * Ease Factor, new_ease_factor = ease_factor + 0.15
             dt_string = (datetime.datetime.today() +
                          datetime.timedelta(days=interval)).strftime('%Y-%m-%d')
-            print(dt_string)
             cur.execute('UPDATE card SET `card_status` = %s, `learning_status` = %s, `interval` = %s, `ease_factor` = %s,`next_accessed` = %s WHERE card_id=%s',
                         (card_status, learning_status, interval, ease_factor, dt_string, card_id))
 
