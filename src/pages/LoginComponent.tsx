@@ -7,7 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
 import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -97,6 +97,7 @@ const reducer = (state: State, action: Action): State => {
 const Login = () => {
   const classes = useStyles();
   const [state, dispatch] = useReducer(reducer, initialState);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (state.username.trim() && state.password.trim()) {
@@ -113,17 +114,45 @@ const Login = () => {
   }, [state.username, state.password]);
 
   const handleLogin = () => {
-    if (state.username === 'abc@email.com' && state.password === 'password') {
-      dispatch({
-        type: 'loginSuccess',
-        payload: 'Login Successfully'
-      });
-    } else {
-      dispatch({
-        type: 'loginFailed',
-        payload: 'Incorrect username or password'
-      });
-    }
+
+    var formdata = new FormData();
+    // formdata.append("username", "junhao");
+    // formdata.append("hashed_password", "1234");
+    formdata.append("username", state.username);
+    formdata.append("hashed_password", state.password);
+    var requestOptions = {
+      method: 'POST',
+      body: formdata
+    };
+    fetch("http://127.0.0.1:5000/user/login", requestOptions)
+        .then(response => response.text())
+        .then(result => {
+          if(result == "Login successfully"){
+            dispatch({
+              type: 'loginSuccess',
+              payload: 'Login Successfully'
+            });
+            navigate("/home")
+          }
+          else {
+            dispatch({
+              type: 'loginFailed',
+              payload: 'Incorrect username or password'
+            });
+          }
+        })
+        .catch(error => console.log('error', error));
+    // if (state.username === 'abc@email.com' && state.password === 'password') {
+    //   dispatch({
+    //     type: 'loginSuccess',
+    //     payload: 'Login Successfully'
+    //   });
+    // } else {
+    //   dispatch({
+    //     type: 'loginFailed',
+    //     payload: 'Incorrect username or password'
+    //   });
+    // }
   };
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
@@ -147,6 +176,7 @@ const Login = () => {
         payload: event.target.value
       });
     }
+
   return (
     <div>
     <form className={classes.container} noValidate autoComplete="off">

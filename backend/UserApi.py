@@ -61,7 +61,7 @@ def login():
             dt_string = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
             cur.execute(
                 "UPDATE user SET last_login = %s WHERE username=%s", (dt_string, username))
-            return """User '{}' login successfully""".format(username)
+            return "Login successfully"
         else:
             return error_message
     except Exception as e:
