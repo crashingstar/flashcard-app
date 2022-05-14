@@ -29,13 +29,20 @@ def verify_password(username, password):
     cur = mysql.connection.cursor()
     try:
         cur.execute("SELECT password FROM user WHERE username=%s", (username,))
-        expected_password = cur.fetchone()[0]
-        if password == expected_password:
-            return True
+
+        rows = cur.fetchone()
+        if rows != None:
+            expected_password = rows[0]
+            if password == expected_password:
+                return (True,"No error")
+            else:
+                error_message = "Password is invalid"
         else:
-            return False
+            error_message = "Username is invalid"
+            expected_password = -1
+        return (False,error_message)
     except Exception as e:
-        return str(e)
+        return (False,error_message)
     finally:
         cur.close()
 
@@ -47,16 +54,16 @@ def login():
         password = request.form.get('hashed_password')
     else:
         return "use a POST request"
-
     cur = mysql.connection.cursor()
     try:
-        if verify_password(username, password):
+        result,error_message = verify_password(username, password)
+        if result:
             dt_string = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
             cur.execute(
                 "UPDATE user SET last_login = %s WHERE username=%s", (dt_string, username))
             return """User '{}' login successfully""".format(username)
         else:
-            return "Password is wrong"
+            return error_message
     except Exception as e:
         return str(e)
     finally:
@@ -75,12 +82,13 @@ def update_password():
 
     cur = mysql.connection.cursor()
     try:
-        if verify_password(username, password):
+        result,error_message = verify_password(username, password)
+        if result:
             cur.execute(
                 "UPDATE user SET password = %s WHERE username=%s", (new_password, username))
             return """User '{}' password changed successfully""".format(username)
         else:
-            return "Current password is wrong"
+            return error_message
     except Exception as e:
         return str(e)
     finally:
@@ -98,12 +106,13 @@ def delete_user():
 
     cur = mysql.connection.cursor()
     try:
-        if verify_password(username, password):
+        result,error_message = verify_password(username, password)
+        if result:
             cur.execute(
                 "DELETE FROM user WHERE username=%s", (username,))
             return """User '{}' deleted successfully""".format(username)
         else:
-            return "Password is wrong"
+            return error_message
     except Exception as e:
         return str(e)
     finally:
