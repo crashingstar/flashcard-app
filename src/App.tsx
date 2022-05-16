@@ -5,6 +5,7 @@ import Deck from './component/DeckComponent';
 import Home from './component/HomeComponent';
 import Login from './pages/LoginComponent';
 import Register from './pages/RegisterComponent';
+import Flashcard from './component/FlashcardComponent';
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Route path="register" element={<Register/>} />
         <Route path="home" element={<Home/>} />
         <Route path="deck" element={<Deck/>} />
+        <Route path="flashcard" element={<Flashcard/>} />
       </Routes>
     </BrowserRouter>);
 }
