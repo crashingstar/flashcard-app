@@ -116,8 +116,6 @@ const Login = () => {
   const handleLogin = () => {
 
     var formdata = new FormData();
-    // formdata.append("username", "junhao");
-    // formdata.append("hashed_password", "1234");
     formdata.append("username", state.username);
     formdata.append("hashed_password", state.password);
     var requestOptions = {
@@ -142,17 +140,6 @@ const Login = () => {
           }
         })
         .catch(error => console.log('error', error));
-    // if (state.username === 'abc@email.com' && state.password === 'password') {
-    //   dispatch({
-    //     type: 'loginSuccess',
-    //     payload: 'Login Successfully'
-    //   });
-    // } else {
-    //   dispatch({
-    //     type: 'loginFailed',
-    //     payload: 'Incorrect username or password'
-    //   });
-    // }
   };
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
@@ -221,7 +208,8 @@ const Login = () => {
           </Button>
         </CardActions>
       </Card>
-      <Link to='/register'>Register</Link>
+      
+      <Button color="primary" variant="contained" size="small" href="/register">Register</Button>
     </form>
     </div>
   );
