@@ -11,15 +11,14 @@ import NavBarComponent from "./component/NavBarComponent";
 function App() {
   return (
     <BrowserRouter>
-      <div>
       <NavBarComponent></NavBarComponent>
+
       <Routes>
         <Route path="/" element={<Login/>} />
         <Route path="register" element={<Register/>} />
         <Route path="home" element={<Home/>} />
         <Route path="deck" element={<Deck/>} />
       </Routes>
-      </div>
     </BrowserRouter>);
 }
 
