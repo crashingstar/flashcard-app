@@ -2,7 +2,6 @@ import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 
 const pages = [
@@ -11,8 +10,16 @@ const pages = [
   ['Settings','/settingsTest'], 
   ['Logout','/logout']];
 
+const rightNavLinks = [
+    ['Login','/login'], 
+    ['Register','/register']
+  ];
+
+
 const NavBarComponent = () => {
+
   return (
+    <div>
     <AppBar position="static" >
         <Toolbar>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
@@ -30,16 +37,21 @@ const NavBarComponent = () => {
             right: '0%',
             position: 'absolute',
             display: { xs: 'none', md: 'flex' } 
-            }}>
-              <Button sx={{ my: 2, color: 'white', display: 'block' }}>
-                Login
+            }}> {rightNavLinks.map((navigationLink) => (
+              <Button  
+                key={navigationLink[0]}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+                href={navigationLink[1]}
+                >
+                {navigationLink[0]}
               </Button>
-              <Button sx={{ my: 2, color: 'white', display: 'block' }}>
-                Register
-              </Button>
+              ))
+            }
           </Box>
         </Toolbar>
     </AppBar>
+    </div>
   );
 };
+
 export default NavBarComponent;
