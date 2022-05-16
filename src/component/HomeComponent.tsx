@@ -28,6 +28,11 @@ const rows = [
 export default function BasicTable() {
   return (
     <TableContainer component={Paper}>
+        {/* <h3>Total Decks: 3</h3>
+        <h3>Favourite Deck: <Link to='/deck'>Korean</Link></h3> 
+        <h3>Time Spent on favourite Deck: 234 hours</h3>
+        <h3>Rececntly updated deck: Japanese</h3>
+        <h3>Deck/s that need review: Korean</h3> */}
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
