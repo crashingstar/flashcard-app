@@ -1,5 +1,5 @@
 import React, { useReducer, useEffect } from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import App, {useStyles} from '../App';
 
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
@@ -7,30 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
 import Button from '@material-ui/core/Button';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    container: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      width: 400,
-      margin: `${theme.spacing(0)} auto`
-    },
-    loginBtn: {
-      marginTop: theme.spacing(2),
-      flexGrow: 1
-    },
-    header: {
-      textAlign: 'center',
-      background: '#212121',
-      color: '#fff'
-    },
-    card: {
-      marginTop: theme.spacing(10)
-    }
-  })
-);
+import {useNavigate } from 'react-router-dom';
 
 //state type
 
@@ -166,9 +143,9 @@ const Login = () => {
 
   return (
     <div>
-    <form className={classes.container} noValidate autoComplete="off">
-      <Card className={classes.card}>
-        <CardHeader className={classes.header} title="Login App" />
+    <form className={classes.containerLogin} noValidate autoComplete="off">
+      <Card className={classes.cardLogin}>
+        <CardHeader className={classes.headerLogin} title="Login App" />
         <CardContent>
           <div>
             <TextField
