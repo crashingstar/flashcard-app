@@ -1,46 +1,45 @@
-import React, { Component } from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import { Typography, IconButton, Toolbar } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import * as React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Container from '@mui/material/Container';
+import Button from '@mui/material/Button';
 
-const useStyles = makeStyles((theme: Theme) =>
-({
-  Icon: {
-    marginRight: theme.spacing(5)
-  },
-  Black: {
-    color: '#000'
-  },
-})
-);
-const NavBar = () => {
-  const classes = useStyles();
+const pages = [
+  ['Home','/home'], 
+  ['Deck','/deck'], 
+  ['Settings','/settingsTest'], 
+  ['Logout','/logout']];
+
+const NavBarComponent = () => {
   return (
-    <div>
-      <AppBar color="primary" position="static">
-        <Toolbar >
-          <Typography variant="h4" color="inherit" className={classes.Icon}>
-            Flashcard App
-          </Typography>
-          <div>
-            <IconButton color="inherit" className={classes.Black} component={Link} to="/home">
-              Home
-            </IconButton>
-            <IconButton color="inherit" className={classes.Black} component={Link} to="/deck">
-              Deck
-            </IconButton>
-            <IconButton color="inherit" className={classes.Black}component={Link} to="/">
-              Settings
-            </IconButton>
-            <IconButton color="inherit" component={Link} to="/">
-              Logout
-            </IconButton>
-          </div>
+    <AppBar position="static" >
+        <Toolbar>
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            {pages.map((page) => (
+              <Button
+                key={page[0]}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+                href={page[1]}
+                >
+                {page[0]}
+              </Button>
+            ))}
+          </Box>
+          <Box sx={{ 
+            right: '0%',
+            position: 'absolute',
+            display: { xs: 'none', md: 'flex' } 
+            }}>
+              <Button sx={{ my: 2, color: 'white', display: 'block' }}>
+                Login
+              </Button>
+              <Button sx={{ my: 2, color: 'white', display: 'block' }}>
+                Register
+              </Button>
+          </Box>
         </Toolbar>
-      </AppBar>
-    </div>
+    </AppBar>
   );
-}
-
-export default NavBar;
+};
+export default NavBarComponent;

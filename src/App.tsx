@@ -6,11 +6,14 @@ import Home from './component/HomeComponent';
 import Login from './pages/LoginComponent';
 import Register from './pages/RegisterComponent';
 import Flashcard from './component/FlashcardComponent';
+import NavBarComponent from "./component/NavBarComponent";
 
 
 function App() {
   return (
     <BrowserRouter>
+      <NavBarComponent></NavBarComponent>
+
       <Routes>
         <Route path="/" element={<Login/>} />
         <Route path="register" element={<Register/>} />
