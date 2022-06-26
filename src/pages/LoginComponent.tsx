@@ -1,122 +1,67 @@
-import React, { useReducer, useEffect } from 'react';
-import App, {useStyles} from '../App';
+import React, { useReducer, useEffect } from "react";
 
-import TextField from '@material-ui/core/TextField';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import CardHeader from '@material-ui/core/CardHeader';
-import Button from '@material-ui/core/Button';
-import {useNavigate } from 'react-router-dom';
+import TextField from "@mui/material/TextField";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardActions from "@mui/material/CardActions";
+import CardHeader from "@mui/material/CardHeader";
+import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
+import LoginReducer, { State } from "../reducers/LoginReducer";
 
 //state type
 
-type State = {
-  username: string
-  password:  string
-  isButtonDisabled: boolean
-  helperText: string
-  isError: boolean
-};
-
-const initialState:State = {
-  username: '',
-  password: '',
+const initialState: State = {
+  username: "",
+  password: "",
   isButtonDisabled: true,
-  helperText: '',
-  isError: false
+  helperText: "",
+  isError: false,
 };
 
-type Action = { type: 'setUsername', payload: string }
-  | { type: 'setPassword', payload: string }
-  | { type: 'setIsButtonDisabled', payload: boolean }
-  | { type: 'loginSuccess', payload: string }
-  | { type: 'loginFailed', payload: string }
-  | { type: 'setIsError', payload: boolean };
-
-const reducer = (state: State, action: Action): State => {
-  switch (action.type) {
-    case 'setUsername': 
-      return {
-        ...state,
-        username: action.payload
-      };
-    case 'setPassword': 
-      return {
-        ...state,
-        password: action.payload
-      };
-    case 'setIsButtonDisabled': 
-      return {
-        ...state,
-        isButtonDisabled: action.payload
-      };
-    case 'loginSuccess': 
-      return {
-        ...state,
-        helperText: action.payload,
-        isError: false
-      };
-    case 'loginFailed': 
-      return {
-        ...state,
-        helperText: action.payload,
-        isError: true
-      };
-    case 'setIsError': 
-      return {
-        ...state,
-        isError: action.payload
-      };
-  }
-}
-
-const Login = () => {
-  const classes = useStyles();
-  const [state, dispatch] = useReducer(reducer, initialState);
+function Login() {
+  const [state, dispatch] = useReducer(LoginReducer, initialState);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (state.username.trim() && state.password.trim()) {
-     dispatch({
-       type: 'setIsButtonDisabled',
-       payload: false
-     });
+      dispatch({
+        type: "setIsButtonDisabled",
+        payload: false,
+      });
     } else {
       dispatch({
-        type: 'setIsButtonDisabled',
-        payload: true
+        type: "setIsButtonDisabled",
+        payload: true,
       });
     }
   }, [state.username, state.password]);
 
   const handleLogin = () => {
-
     var formdata = new FormData();
     formdata.append("username", state.username);
     formdata.append("hashed_password", state.password);
     var requestOptions = {
-      method: 'POST',
-      body: formdata
+      method: "POST",
+      body: formdata,
     };
     fetch("http://127.0.0.1:5000/user/login", requestOptions)
-        .then(response => response.text())
-        .then(result => {
-          if(result == "Login successfully"){
-            dispatch({
-              type: 'loginSuccess',
-              payload: 'Login Successfully'
-            });
-            navigate("/home")
-          }
-          else {
-            dispatch({
-              type: 'loginFailed',
-              payload: 'Incorrect username or password'
-            });
-          }
-        })
-        .catch(error => console.log('error', error));
+      .then((response) => response.text())
+      .then((result) => {
+        if (result == "Login successfully") {
+          dispatch({
+            type: "loginSuccess",
+            payload: "Login Successfully",
+          });
+          navigate("/home");
+        } else {
+          dispatch({
+            type: "loginFailed",
+            payload: "Incorrect username or password",
+          });
+        }
+      })
+      .catch((error) => console.log("error", error));
   };
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
@@ -125,69 +70,78 @@ const Login = () => {
     }
   };
 
-  const handleUsernameChange: React.ChangeEventHandler<HTMLInputElement> =
-    (event) => {
-      dispatch({
-        type: 'setUsername',
-        payload: event.target.value
-      });
-    };
+  const handleUsernameChange: React.ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    dispatch({
+      type: "setUsername",
+      payload: event.target.value,
+    });
+  };
 
-  const handlePasswordChange: React.ChangeEventHandler<HTMLInputElement> =
-    (event) => {
-      dispatch({
-        type: 'setPassword',
-        payload: event.target.value
-      });
-    }
+  const handlePasswordChange: React.ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    dispatch({
+      type: "setPassword",
+      payload: event.target.value,
+    });
+  };
 
   return (
     <div>
-    <form className={classes.containerLogin} noValidate autoComplete="off">
-      <Card className={classes.cardLogin}>
-        <CardHeader className={classes.headerLogin} title="Login App" />
-        <CardContent>
-          <div>
-            <TextField
-              error={state.isError}
-              fullWidth
-              id="username"
-              type="email"
-              label="Username"
-              placeholder="Username"
-              margin="normal"
-              onChange={handleUsernameChange}
-              onKeyPress={handleKeyPress}
-            />
-            <TextField
-              error={state.isError}
-              fullWidth
-              id="password"
-              type="password"
-              label="Password"
-              placeholder="Password"
-              margin="normal"
-              helperText={state.helperText}
-              onChange={handlePasswordChange}
-              onKeyPress={handleKeyPress}
-            />
-          </div>
-        </CardContent>
-        <CardActions>
-          <Button
-            variant="contained"
-            size="large"
-            color="secondary"
-            className={classes.loginBtn}
-            onClick={handleLogin}
-            disabled={state.isButtonDisabled}>
-            Login
-          </Button>
-        </CardActions>
-      </Card>
-      
-      <Button color="primary" variant="contained" size="small" href="/register">Register</Button>
-    </form>
+      <form noValidate autoComplete="off">
+        <Card>
+          <CardHeader title="Login App" />
+          <CardContent>
+            <div>
+              <TextField
+                error={state.isError}
+                fullWidth
+                id="username"
+                type="email"
+                label="Username"
+                placeholder="Username"
+                margin="normal"
+                onChange={handleUsernameChange}
+                onKeyPress={handleKeyPress}
+              />
+              <TextField
+                error={state.isError}
+                fullWidth
+                id="password"
+                type="password"
+                label="Password"
+                placeholder="Password"
+                margin="normal"
+                helperText={state.helperText}
+                onChange={handlePasswordChange}
+                onKeyPress={handleKeyPress}
+              />
+            </div>
+          </CardContent>
+          <CardActions>
+            <Button
+              variant="contained"
+              size="large"
+              color="secondary"
+              onClick={handleLogin}
+              disabled={state.isButtonDisabled}
+            >
+              Login
+            </Button>
+          </CardActions>
+        </Card>
+
+        <Button
+          color="primary"
+          variant="contained"
+          size="small"
+          href="/register"
+        >
+          Register
+        </Button>
+      </form>
     </div>
   );
 }

@@ -1,126 +1,50 @@
-import React, { useReducer, useEffect } from 'react';
-import App, {useStyles} from '../App';
+import React, { useReducer, useEffect } from "react";
 
-import TextField from '@material-ui/core/TextField';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import CardHeader from '@material-ui/core/CardHeader';
-import Button from '@material-ui/core/Button';
-
-// const useStyles = makeStyles((theme: Theme) =>
-//   createStyles({
-//     container: {
-//       display: 'flex',
-//       flexWrap: 'wrap',
-//       width: 400,
-//       margin: `${theme.spacing(0)} auto`
-//     },
-//     registerBtn: {
-//       marginTop: theme.spacing(2),
-//       flexGrow: 1
-//     },
-//     header: {
-//       textAlign: 'center',
-//       background: '#212121',
-//       color: '#fff'
-//     },
-//     card: {
-//       marginTop: theme.spacing(10)
-//     }
-//   })
-// );
+import TextField from "@material-ui/core/TextField";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import CardHeader from "@material-ui/core/CardHeader";
+import Button from "@material-ui/core/Button";
+import RegisterReducer, { State } from "../reducers/RegisterReducer";
 
 //state type
 
-type State = {
-  username: string
-  password:  string
-  isButtonDisabled: boolean
-  helperText: string
-  isError: boolean
-};
-
-const initialState:State = {
-  username: '',
-  password: '',
+const initialState: State = {
+  username: "",
+  password: "",
   isButtonDisabled: true,
-  helperText: '',
-  isError: false
+  helperText: "",
+  isError: false,
 };
-
-type Action = { type: 'setUsername', payload: string }
-  | { type: 'setPassword', payload: string }
-  | { type: 'setIsButtonDisabled', payload: boolean }
-  | { type: 'registerSuccess', payload: string }
-  | { type: 'registerFailed', payload: string }
-  | { type: 'setIsError', payload: boolean };
-
-const reducer = (state: State, action: Action): State => {
-  switch (action.type) {
-    case 'setUsername': 
-      return {
-        ...state,
-        username: action.payload
-      };
-    case 'setPassword': 
-      return {
-        ...state,
-        password: action.payload
-      };
-    case 'setIsButtonDisabled': 
-      return {
-        ...state,
-        isButtonDisabled: action.payload
-      };
-    case 'registerSuccess': 
-      return {
-        ...state,
-        helperText: action.payload,
-        isError: false
-      };
-    case 'registerFailed': 
-      return {
-        ...state,
-        helperText: action.payload,
-        isError: true
-      };
-    case 'setIsError': 
-      return {
-        ...state,
-        isError: action.payload
-      };
-  }
-}
 
 const Register = () => {
-  const classes = useStyles();
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(RegisterReducer, initialState);
 
   useEffect(() => {
     if (state.username.trim() && state.password.trim()) {
-     dispatch({
-       type: 'setIsButtonDisabled',
-       payload: false
-     });
+      dispatch({
+        type: "setIsButtonDisabled",
+        payload: false,
+      });
     } else {
       dispatch({
-        type: 'setIsButtonDisabled',
-        payload: true
+        type: "setIsButtonDisabled",
+        payload: true,
       });
     }
   }, [state.username, state.password]);
 
   const handleRegister = () => {
-    if (state.username !== 'abc@email.com') {
+    if (state.username !== "abc@email.com") {
       dispatch({
-        type: 'registerSuccess',
-        payload: 'Register Successfully'
+        type: "registerSuccess",
+        payload: "Register Successfully",
       });
     } else {
       dispatch({
-        type: 'registerFailed',
-        payload: 'Username already exist'
+        type: "registerFailed",
+        payload: "Username already exist",
       });
     }
   };
@@ -131,68 +55,70 @@ const Register = () => {
     }
   };
 
-  const handleUsernameChange: React.ChangeEventHandler<HTMLInputElement> =
-    (event) => {
-      dispatch({
-        type: 'setUsername',
-        payload: event.target.value
-      });
-    };
+  const handleUsernameChange: React.ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    dispatch({
+      type: "setUsername",
+      payload: event.target.value,
+    });
+  };
 
-  const handlePasswordChange: React.ChangeEventHandler<HTMLInputElement> =
-    (event) => {
-      dispatch({
-        type: 'setPassword',
-        payload: event.target.value
-      });
-    }
+  const handlePasswordChange: React.ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    dispatch({
+      type: "setPassword",
+      payload: event.target.value,
+    });
+  };
   return (
     <div>
-    <form className={classes.containerLogin} noValidate autoComplete="off">
-      <Card className={classes.cardLogin}>
-        <CardHeader className={classes.headerLogin} title="Register App" />
-        <CardContent>
-          <div>
-            <TextField
-              error={state.isError}
-              fullWidth
-              id="username"
-              type="email"
-              label="Username"
-              placeholder="Username"
-              margin="normal"
-              onChange={handleUsernameChange}
-              onKeyPress={handleKeyPress}
-            />
-            <TextField
-              error={state.isError}
-              fullWidth
-              id="password"
-              type="password"
-              label="Password"
-              placeholder="Password"
-              margin="normal"
-              helperText={state.helperText}
-              onChange={handlePasswordChange}
-              onKeyPress={handleKeyPress}
-            />
-          </div>
-        </CardContent>
-        <CardActions>
-          <Button
-            variant="contained"
-            size="large"
-            color="secondary"
-            className={classes.loginBtn}
-            onClick={handleRegister}
-            disabled={state.isButtonDisabled}>
-            Register
-          </Button>
-        </CardActions>
-      </Card>
-    </form>
+      <form noValidate autoComplete="off">
+        <Card>
+          <CardHeader title="Register App" />
+          <CardContent>
+            <div>
+              <TextField
+                error={state.isError}
+                fullWidth
+                id="username"
+                type="email"
+                label="Username"
+                placeholder="Username"
+                margin="normal"
+                onChange={handleUsernameChange}
+                onKeyPress={handleKeyPress}
+              />
+              <TextField
+                error={state.isError}
+                fullWidth
+                id="password"
+                type="password"
+                label="Password"
+                placeholder="Password"
+                margin="normal"
+                helperText={state.helperText}
+                onChange={handlePasswordChange}
+                onKeyPress={handleKeyPress}
+              />
+            </div>
+          </CardContent>
+          <CardActions>
+            <Button
+              variant="contained"
+              size="large"
+              color="secondary"
+              onClick={handleRegister}
+              disabled={state.isButtonDisabled}
+            >
+              Register
+            </Button>
+          </CardActions>
+        </Card>
+      </form>
     </div>
   );
-}
+};
 
 export default Register;
