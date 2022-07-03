@@ -6,6 +6,24 @@ from db_connection import mysql
 
 card_api = Blueprint('card_api', __name__)
 
+@card_api.route('/get_card', methods=['POST'])
+def get_card():
+    if request.method != 'POST':
+         return "use a POST request"
+
+    dt_string = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    cur = mysql.connection.cursor()
+    try:
+        cur.execute(
+            "SELECT * FROM card WHERE card_id=%s", (1,))
+        data = parse_one_row_result(cur)
+        print(data)
+    except Exception as e:
+        return str(e)
+    finally:
+        mysql.connection.commit()
+        cur.close()
+    return data
 
 @card_api.route('/create_card', methods=['POST'])
 def create_card():
@@ -169,3 +187,8 @@ def verify_user_id(deck_id, user_id):
         return str(e)
     finally:
         cur.close()
+
+def parse_one_row_result(cur):
+    fields = [field_md[0] for field_md in cur.description]
+    result = dict(zip(fields, list(cur.fetchone())))
+    return result

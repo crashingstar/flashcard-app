@@ -6,8 +6,7 @@ export default interface User{
     kor: string;
   } 
 
-export default class Card extends React.Component <{}> {
-    render() {
+export function Card()  {
       return (
         <div className="card-container">
             <div className="card">
@@ -22,5 +21,5 @@ export default class Card extends React.Component <{}> {
         </div>
     </div>
       );
-    }
+    
   }
