@@ -96,12 +96,12 @@ Both ease factor and interval is updated and stored after the card is used each 
 
 ### Anki's modification
 
-| q   |       | Ease Factor    | Interval                                                            |
-| --- | ----- | -------------- | ------------------------------------------------------------------- |
-| 0   | Again | EF - 0.2       | I(n) = I(n-1) \* 0 --> Resets to 1 after minium interval is applied |
-| 1   | Hard  | EF - 0.15      | I(n) = I(n-1) \* 1.2(default hard interval)                         |
-| 2   | Good  | EF (No change) | I(n) = I(n-1) \* EF (Note that min EF is 1.3)                       |
-| 3   | Easy  | EF + 0.15      | I(n) = I(n-1) \* EF \* 1.3(default easy bonus)                      |
+| q   |       | Ease Factor    | Interval                                                             |
+| --- | ----- | -------------- | -------------------------------------------------------------------- |
+| 0   | Again | EF - 0.2       | I(n) = I(n-1) \* 0 --> Resets to 1 after minimum interval is applied |
+| 1   | Hard  | EF - 0.15      | I(n) = I(n-1) \* 1.2(default hard interval)                          |
+| 2   | Good  | EF (No change) | I(n) = I(n-1) \* EF (Note that min EF is 1.3)                        |
+| 3   | Easy  | EF + 0.15      | I(n) = I(n-1) \* EF \* 1.3(default easy bonus)                       |
 
 https://docs.ankiweb.net/deck-options.html#easy-bonus
 
