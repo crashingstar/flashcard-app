@@ -1,9 +1,12 @@
 import { Button } from "@material-ui/core";
+import { Stack } from "@mui/material";
 import * as React from "react";
 import { Card } from "../component/shared/Card";
 export default function Flashcard() {
 
     const [cardData, setCardData] = React.useState<any>()
+    const [cardNumber, setCardNumber] = React.useState(0)
+    const [isLoading, setIsLoading] = React.useState(true)
     React.useEffect(() => {
     var requestOptions = {
       method: "POST",
@@ -11,11 +14,13 @@ export default function Flashcard() {
     fetch("http://127.0.0.1:5000/card/get_card", requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        console.log(result)
-        setCardData(result)
+        console.log(Object.entries(result))
+        setCardData(Object.entries(result))
+        setIsLoading(false)
+        console.log(cardNumber)
       })
       .catch((error) => console.log("error", error));
-  },[]);
+  },[setCardNumber]);
     const handleEasyButton = () => {
       var formdata = new FormData();
       formdata.append("deck_id", cardData.deck_id);
@@ -31,6 +36,7 @@ export default function Flashcard() {
       .then((response) => response.text())
       .then((result) => {
         console.log(result)
+        setCardNumber(cardNumber+1)
       })
       .catch((error) => console.log("error", error));
     }
@@ -49,6 +55,7 @@ export default function Flashcard() {
       .then((response) => response.text())
       .then((result) => {
         console.log(result)
+        setCardNumber(cardNumber+1)
       })
       .catch((error) => console.log("error", error));
     }
@@ -67,6 +74,7 @@ export default function Flashcard() {
       .then((response) => response.text())
       .then((result) => {
         console.log(result)
+        setCardNumber(cardNumber+1)
       })
       .catch((error) => console.log("error", error));
     }
@@ -85,18 +93,21 @@ export default function Flashcard() {
       .then((response) => response.text())
       .then((result) => {
         console.log(result)
+        setCardNumber(cardNumber+1)
       })
       .catch((error) => console.log("error", error));
     }
     return (
-      <div>
+      <>
         <h3>Flashcard</h3>
-        <Card />
-        <Button onClick={handleEasyButton}>Easy</Button>
-        <Button onClick={handleGoodButton}>Good </Button>
-        <Button onClick={handleHardButton}>Hard </Button>
-        <Button onClick={handleAgainButton}>Again</Button>
-      </div>
+        {!isLoading && <Card {...cardData[cardNumber][1]}/>}
+        <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} paddingTop="10px">
+        <Button variant="outlined" onClick={handleEasyButton}>Easy</Button>
+        <Button variant="outlined" onClick={handleGoodButton}>Good </Button>
+        <Button variant="outlined" onClick={handleHardButton}>Hard </Button>
+        <Button variant="outlined" onClick={handleAgainButton}>Again</Button>
+        </Stack>
+      </>
     );
   
 }
