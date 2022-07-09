@@ -6,6 +6,7 @@ import Login from "./pages/LoginComponent";
 import Register from "./pages/RegisterComponent";
 import Flashcard from "./pages/FlashcardComponent";
 import NavBarComponent from "./component/NavBarComponent";
+import Logout from "./pages/LogoutComponent";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="home" element={<Home />} />
         <Route path="deck" element={<Deck />} />
         <Route path="flashcard" element={<Flashcard />} />
+        <Route path="logout" element={<Logout />} />
       </Routes>
     </BrowserRouter>
   );
