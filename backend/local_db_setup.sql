@@ -47,7 +47,7 @@ delimiter #
 create procedure create_data()
 begin
 
-declare max_val int unsigned default 10;
+declare max_val int unsigned default 20;
 declare counter int unsigned default 1;
   start transaction;
   while counter < max_val do
