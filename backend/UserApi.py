@@ -61,7 +61,11 @@ def login():
             dt_string = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
             cur.execute(
                 "UPDATE user SET last_login = %s WHERE username=%s", (dt_string, username))
-            return "Login successfully"
+
+            cur.execute("SELECT user_id FROM user WHERE username=%s", (username,))
+            login_id = cur.fetchone()[0]
+            
+            return {'status_code':'Login successfully','login_id':login_id}
         else:
             return error_message
     except Exception as e:
