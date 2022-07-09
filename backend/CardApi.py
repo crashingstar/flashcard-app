@@ -15,8 +15,8 @@ def get_card():
     cur = mysql.connection.cursor()
     try:
         cur.execute(
-            "SELECT * FROM card WHERE card_id=%s", (1,))
-        data = parse_one_row_result(cur)
+            "SELECT * FROM card ")
+        data = parse_all_result(cur)
         print(data)
     except Exception as e:
         return str(e)
@@ -188,7 +188,9 @@ def verify_user_id(deck_id, user_id):
     finally:
         cur.close()
 
-def parse_one_row_result(cur):
+def parse_all_result(cur):
     fields = [field_md[0] for field_md in cur.description]
-    result = dict(zip(fields, list(cur.fetchone())))
+    # result = [dict(zip(fields, row)) for row in cur.fetchall()]
+    result = {row[0]: dict(zip(fields, row)) for row in cur.fetchall()}
+    print(result)
     return result
