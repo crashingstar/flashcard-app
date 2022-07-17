@@ -17,7 +17,9 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="home" element={<Home />} />
-        <Route path="deck" element={<Deck />} />
+        <Route path="deck" element={<Deck />}>
+          <Route path=":deckId" element={<Deck />} />
+        </Route>
         <Route path="flashcard" element={<Flashcard />} />
         <Route path="logout" element={<Logout />} />
       </Routes>
