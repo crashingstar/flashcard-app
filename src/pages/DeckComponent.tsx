@@ -3,7 +3,11 @@ import { Link } from "react-router-dom";
 import { Deck } from "../component/shared/Deck";
 
 function DeckComponentTest() {
-  return <>{<Deck {...cardData[cardNumber][1]} />}</>;
+  const tempData = {
+    deck_name: "test deck name",
+  };
+
+  return <>{<Deck {...tempData} />}</>;
 }
 
 export default DeckComponentTest;
