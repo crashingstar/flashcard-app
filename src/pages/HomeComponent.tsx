@@ -6,8 +6,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { AnalyticsOutlined } from "@mui/icons-material";
-// import HomepageReducer, { State } from "../reducers/HomepageReducer";
 
 type State = {
   result: Data[];
@@ -18,13 +16,15 @@ type Data = {
   date_created: string;
   deck_id: number;
   last_accessed: number;
+  total_cards: number;
 };
 
 function createData(
   name: string,
   date_created: string,
   deck_id: number,
-  last_accessed: number
+  last_accessed: number,
+  total_cards: number
 ) {
   return {
     name,
@@ -59,7 +59,13 @@ export default function BasicTable() {
           setState((prevState) => ({
             result: [
               ...prevState.result,
-              createData(v.deck_name, v.deck_id, v.date_created, 24),
+              createData(
+                v.deck_name,
+                v.deck_id,
+                v.date_created,
+                v.last_updated,
+                v.total_cards
+              ),
             ],
           }));
         });
@@ -81,6 +87,7 @@ export default function BasicTable() {
               <TableCell align="right">Deck Created</TableCell>
               <TableCell align="right">Deck Id</TableCell>
               <TableCell align="right">Last Accessed</TableCell>
+              <TableCell align="right">Total Cards</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -95,6 +102,7 @@ export default function BasicTable() {
                 <TableCell align="right">{row.deck_id}</TableCell>
                 <TableCell align="right">{row.date_created}</TableCell>
                 <TableCell align="right">{row.last_accessed}</TableCell>
+                <TableCell align="right">{row.total_cards}</TableCell>
               </TableRow>
             ))}
           </TableBody>
