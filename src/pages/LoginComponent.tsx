@@ -46,13 +46,14 @@ function Login() {
       body: formdata,
     };
     fetch("http://127.0.0.1:5000/user/login", requestOptions)
-      .then((response) => response.text())
+      .then((response) => response.json())
       .then((result) => {
-        if (result == "Login successfully") {
+        if (result.status_code == "Login successfully") {
           dispatch({
             type: "loginSuccess",
             payload: "Login Successfully",
           });
+          localStorage.setItem("user_id",result.login_id)
           navigate("/home");
         } else {
           dispatch({
