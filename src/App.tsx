@@ -17,10 +17,12 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="home" element={<Home />} />
-        <Route path="deck" element={<Deck />}>
+        <Route path="deck">
           <Route path=":deckId" element={<Deck />} />
+          <Route path="review">
+            <Route path=":deckId" element={<Flashcard />} />
+          </Route>
         </Route>
-        <Route path="flashcard" element={<Flashcard />} />
         <Route path="logout" element={<Logout />} />
       </Routes>
     </BrowserRouter>

@@ -1,5 +1,6 @@
 import * as React from "react";
 import "./Card.css";
+import { Link } from "react-router-dom";
 
 export default interface DeckType {
   deck_name: string;
@@ -33,13 +34,18 @@ export function createDeckData(
 }
 
 export const Deck: React.FC<DeckType> = (props) => {
-  console.log(props);
   return (
     <div>
-      <h3>Total Flash card: 66</h3>
-      <h3>Deck Name: {props.deck_name}</h3>
-      <h3>Time spent on deck: 234 hours</h3>
-      <button>{/* <Link to="/flashcard">Click here to review</Link> */}</button>
+      <h2>Deck Name: {props.deck_name}</h2>
+      <h2>Total Flash card: {props.total_cards}</h2>
+      <h2>Date created: {props.date_created}</h2>
+      <h2>Last accessed: {props.last_accessed}</h2>
+      <h2>Deck Id: {props.deck_id}</h2>
+      <button>
+        <Link to={`/deck/review/${props.deck_id}`}>
+          Click here to review deck {props.deck_name}
+        </Link>
+      </button>
     </div>
   );
 };
