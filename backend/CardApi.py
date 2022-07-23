@@ -25,6 +25,24 @@ def get_card():
         cur.close()
     return data
 
+@card_api.route('/get_deck_all_card', methods=['POST'])
+def get_card():
+    if request.method != 'POST':
+         return "use a POST request"
+
+    cur = mysql.connection.cursor()
+    try:
+        cur.execute(
+            "SELECT deck_id FROM deck WHERE deck_id=%s", (deck_id))
+        data = parse_all_result(cur)
+        print(data)
+    except Exception as e:
+        return str(e)
+    finally:
+        mysql.connection.commit()
+        cur.close()
+    return data
+
 @card_api.route('/create_card', methods=['POST'])
 def create_card():
     if request.method == 'POST':
