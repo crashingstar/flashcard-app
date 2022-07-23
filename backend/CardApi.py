@@ -10,14 +10,11 @@ card_api = Blueprint('card_api', __name__)
 def get_card():
     if request.method != 'POST':
          return "use a POST request"
-
-    dt_string = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     cur = mysql.connection.cursor()
     try:
         cur.execute(
             "SELECT * FROM card ")
         data = parse_all_result(cur)
-        print(data)
     except Exception as e:
         return str(e)
     finally:
@@ -31,11 +28,12 @@ def get_deck_all_card():
         deck_id = request.form.get('deck_id')
     else:
         return "use a POST request"
-
+    print("In get deck all card")
+    print(deck_id)
     cur = mysql.connection.cursor()
     try:
         cur.execute(
-            "SELECT deck_id FROM deck WHERE deck_id=%s", (deck_id))
+            "SELECT * FROM card WHERE deck_id=%s", (deck_id))
         data = parse_all_result(cur)
         print(data)
     except Exception as e:
