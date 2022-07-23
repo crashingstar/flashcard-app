@@ -10,11 +10,15 @@ export default function Flashcard() {
   const [isLoading, setIsLoading] = React.useState(true);
   let { deckId } = useParams(); // Unpacking and retrieve id
 
-  React.useEffect(() => {
+  function getAllCardDetails(deckId: any) {
+    var formdata = new FormData();
+    formdata.append("deck_id", deckId);
+
     var requestOptions = {
       method: "POST",
+      body: formdata,
     };
-    fetch("http://127.0.0.1:5000/card/get_card", requestOptions)
+    fetch("http://127.0.0.1:5000/card/get_deck_all_card", requestOptions)
       .then((response) => response.json())
       .then((result) => {
         console.log(Object.entries(result));
@@ -23,7 +27,12 @@ export default function Flashcard() {
         console.log(cardNumber);
       })
       .catch((error) => console.log("error", error));
+  }
+
+  React.useEffect(() => {
+    getAllCardDetails(deckId);
   }, [setCardNumber]);
+
   const handleEasyButton = () => {
     var formdata = new FormData();
     formdata.append("deck_id", cardData.deck_id);
