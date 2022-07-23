@@ -1,7 +1,7 @@
 import time
 from flask import Blueprint, request
 from datetime import datetime
-from db_connection import mysql
+from .db_connection import mysql
 
 deck_api = Blueprint('deck_api', __name__)
 

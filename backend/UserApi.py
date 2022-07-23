@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from db_connection import mysql
+from .db_connection import mysql
 from datetime import datetime
 
 user_api = Blueprint('user_api', __name__)

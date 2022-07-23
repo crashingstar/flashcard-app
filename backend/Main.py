@@ -1,8 +1,8 @@
 # from flask import Flask
-from CardApi import card_api
-from DeckApi import deck_api
-from UserApi import user_api
-from db_connection import app
+from .CardApi import card_api
+from .DeckApi import deck_api
+from .UserApi import user_api
+from .db_connection import app
 
 # app = Flask(__name__)
 

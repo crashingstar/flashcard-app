@@ -2,7 +2,7 @@ from telnetlib import NEW_ENVIRON
 import time
 from flask import Blueprint, request
 import datetime
-from db_connection import mysql
+from .db_connection import mysql
 
 card_api = Blueprint('card_api', __name__)
 
@@ -26,9 +26,11 @@ def get_card():
     return data
 
 @card_api.route('/get_deck_all_card', methods=['POST'])
-def get_card():
-    if request.method != 'POST':
-         return "use a POST request"
+def get_deck_all_card():
+    if request.method == 'POST':
+        deck_id = request.form.get('deck_id')
+    else:
+        return "use a POST request"
 
     cur = mysql.connection.cursor()
     try:
