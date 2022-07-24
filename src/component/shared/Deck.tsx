@@ -1,6 +1,7 @@
 import * as React from "react";
-import "./Card.css";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
+import Button from "@mui/material/Button";
+import Link from "@mui/material/Link";
 
 export default interface DeckType {
   deck_name: string;
@@ -41,11 +42,17 @@ export const Deck: React.FC<DeckType> = (props) => {
       <h2>Date created: {props.date_created}</h2>
       <h2>Last accessed: {props.last_accessed}</h2>
       <h2>Deck Id: {props.deck_id}</h2>
-      <button>
-        <Link to={`/deck/review/${props.deck_id}`}>
-          Click here to review deck {props.deck_name}
+      <Button variant="contained" size="large">
+        <Link color="inherit" href={`/deck/review/${props.deck_id}`}>
+          Review
         </Link>
-      </button>
+      </Button>
+      <Button variant="contained" size="large">
+        <Link color="inherit">Edit</Link>
+      </Button>
+      <Button variant="contained" size="large">
+        <Link color="inherit">Delete</Link>
+      </Button>
     </div>
   );
 };
