@@ -49,24 +49,17 @@ export default function Flashcard() {
           }));
         });
 
-        // console.log(Object.entries(result));
-        // setCardData(JSON.parse(result));
         setIsLoading(false);
-        console.log(cardNumber);
       })
       .catch((error) => console.log("error", error));
   }
 
   const updateCardInterval = (responseQuality: string) => {
     var formdata = new FormData();
-    console.log("Carddatacardnumber");
-    console.log(cardData);
     formdata.append("deck_id", String(cardData.result[cardNumber].deck_id));
     formdata.append("card_id", String(cardData.result[cardNumber].card_id));
     formdata.append("user_id", "1");
     formdata.append("response_quality", responseQuality!);
-    console.log(cardData.result[cardNumber].deck_id);
-    console.log(cardData.result[cardNumber].card_id);
 
     var requestOptions = {
       method: "POST",
@@ -76,8 +69,6 @@ export default function Flashcard() {
     fetch("http://127.0.0.1:5000/card/update_card_interval", requestOptions)
       .then((response) => response.text())
       .then((result) => {
-        console.log("Before set cardNumebrr");
-        console.log(result);
         setCardNumber(cardNumber + 1);
       })
       .catch((error) => console.log("error", error));
@@ -87,19 +78,6 @@ export default function Flashcard() {
     getAllCardDetails(deckId);
   }, [setCardNumber]);
 
-  // const handleEasyButton = () => {
-  //   updateCardInterval("3");
-  // };
-
-  // const handleGoodButton = () => {
-  //   updateCardInterval("2");
-  // };
-  // const handleHardButton = () => {
-  //   updateCardInterval("1");
-  // };
-  // const handleAgainButton = () => {
-  //   updateCardInterval("0");
-  // };
   return (
     <>
       <h3>Flashcard</h3>

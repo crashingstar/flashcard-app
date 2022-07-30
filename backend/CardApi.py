@@ -35,7 +35,6 @@ def get_deck_all_card():
         cur.execute(
             "SELECT * FROM card WHERE deck_id=%s", (deck_id))
         data = parse_all_result(cur)
-        print(data)
     except Exception as e:
         return str(e)
     finally:
@@ -102,11 +101,14 @@ def update_card_details():
     cur = mysql.connection.cursor()
     try:
         if verify_user_id(deck_id, user_id):
+            del details_dic['user_id']
             sql = 'UPDATE card SET {}'.format(
                 ', '.join('{}=%s'.format(k) for k in details_dic))
             dic_values = list(details_dic.values())
             dic_values.append(deck_id)
             dic_values.append(card_id)
+            print(sql + ' WHERE deck_id=%s AND card_id=%s',
+                        tuple(dic_values))
             cur.execute(sql + ' WHERE deck_id=%s AND card_id=%s',
                         tuple(dic_values))
             return "Updated succesfully"
