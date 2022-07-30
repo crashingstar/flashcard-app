@@ -12,11 +12,11 @@ import CardType, {
   updateCardContent,
   createNewCard,
 } from "../shared/Card";
-import DeckType, { Deck, createDeckData } from "../shared/Deck";
+import DeckType from "../shared/Deck";
 
 const initialCardState: { [key: number]: CardType } = {};
 
-function Item(props: BoxProps) {
+export function Item(props: BoxProps) {
   const { sx, ...other } = props;
   return (
     <Box
@@ -97,32 +97,16 @@ export const EditDeck: React.FC<DeckType> = (props) => {
   return (
     <div>
       <Card sx={{ maxWidth: "100%" }}>
-        <CardContent
+        <Box
           sx={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
+            gridColumnEnd: "span 4",
+            textAlign: "center",
+            fontWeight: "bold",
+            fontSize: 36,
           }}
         >
-          <Item sx={{ textAlign: "right" }}>Deck Name: </Item>
-          <TextField
-            sx={{ gridColumnStart: "2", gridColumnEnd: "4" }}
-            label="Deck Name"
-            color="primary"
-            value={props.deck_name}
-            focused
-          />
-          <Item />
-          <Box
-            sx={{
-              gridColumnEnd: "span 4",
-              textAlign: "center",
-              fontWeight: "bold",
-              fontSize: 36,
-            }}
-          >
-            Flash-cards:
-          </Box>
-        </CardContent>
+          Flash-cards:
+        </Box>
         <CardContent>
           {Object.entries(cardData).map(([card_id, cardInfo]) => (
             <Box
