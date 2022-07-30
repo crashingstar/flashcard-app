@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import DeckType, { Deck, createDeckData } from "../component/shared/Deck";
+import DeckType, {
+  EditDeck,
+  createDeckData,
+} from "../component/shared/EditDeck";
 
 type State = {
   result: DeckType;
@@ -17,7 +20,7 @@ const initialState: State = {
   },
 };
 
-function DeckComponent() {
+function EditDeckComponent() {
   const [state, setState] = useState(initialState);
   let { deckId } = useParams(); // Unpacking and retrieve id
 
@@ -54,7 +57,7 @@ function DeckComponent() {
     GetDeckDetails(deckId);
   }, []);
 
-  return <>{<Deck {...state.result} />}</>;
+  return <>{<EditDeck {...state.result} />}</>;
 }
 
-export default DeckComponent;
+export default EditDeckComponent;

@@ -37,7 +37,8 @@ export default function BasicTable() {
                 v.deck_id,
                 v.date_created,
                 v.last_updated,
-                v.total_cards
+                v.total_cards,
+                v.cards_due
               ),
             ],
           }));

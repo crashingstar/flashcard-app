@@ -1,6 +1,7 @@
 import * as React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Deck from "./pages/DeckComponent";
+import EditDeck from "./pages/EditDeckComponent";
 import Home from "./pages/HomeComponent";
 import Login from "./pages/LoginComponent";
 import Register from "./pages/RegisterComponent";
@@ -21,6 +22,9 @@ function App() {
           <Route path=":deckId" element={<Deck />} />
           <Route path="review">
             <Route path=":deckId" element={<Flashcard />} />
+          </Route>
+          <Route path="edit">
+            <Route path=":deckId" element={<EditDeck />} />
           </Route>
         </Route>
         <Route path="logout" element={<Logout />} />
