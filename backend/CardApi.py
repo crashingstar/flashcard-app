@@ -28,8 +28,6 @@ def get_deck_all_card():
         deck_id = request.form.get('deck_id')
     else:
         return "use a POST request"
-    print("In get deck all card")
-    print(deck_id)
     cur = mysql.connection.cursor()
     try:
         cur.execute(
@@ -45,8 +43,6 @@ def get_deck_all_card():
 @card_api.route('/create_card', methods=['POST'])
 def create_card():
     if request.method == 'POST':
-        front = request.form.get('front')
-        back = request.form.get('back')
         deck_id = request.form.get('deck_id')
 
     else:
@@ -55,13 +51,16 @@ def create_card():
     cur = mysql.connection.cursor()
     try:
         cur.execute(
-            "INSERT INTO card(deck_id, front, back, date_created) VALUES (%s, %s, %s, %s)", (deck_id, front, back, dt_string))
+            "INSERT INTO card(deck_id, front, back, date_created) VALUES (%s, %s, %s, %s)", (deck_id, None, None, dt_string))
+        cur.execute(
+            "SELECT * FROM card WHERE card_id=(SELECT LAST_INSERT_ID())")
+        data = parse_one_row_result(cur)
     except Exception as e:
         return str(e)
     finally:
         mysql.connection.commit()
         cur.close()
-    return {'card_id': get_card_id(front, deck_id)}
+    return data
 
 
 @card_api.route('/delete_card', methods=['DELETE'])
@@ -212,5 +211,9 @@ def parse_all_result(cur):
     fields = [field_md[0] for field_md in cur.description]
     # result = [dict(zip(fields, row)) for row in cur.fetchall()]
     result = {row[0]: dict(zip(fields, row)) for row in cur.fetchall()}
-    print(result)
+    return result
+
+def parse_one_row_result(cur):
+    fields = [field_md[0] for field_md in cur.description]
+    result = dict(zip(fields, list(cur.fetchone())))
     return result

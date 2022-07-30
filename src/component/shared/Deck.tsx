@@ -67,6 +67,35 @@ export function createDeckData(
   } as DeckType;
 }
 
+export function GetDeckDetails(deckId: any, setState: any) {
+  var formdata = new FormData();
+  formdata.append("deck_id", deckId);
+
+  var requestOptions = {
+    method: "POST",
+    body: formdata,
+  };
+  fetch("http://127.0.0.1:5000/deck/get_deck_details", requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+      console.log(result);
+      // Object.entries(JSON.parse(result)).forEach(([k, unknown_v]) => {
+      let v = JSON.parse(result) as any;
+      setState(() => ({
+        result: createDeckData(
+          v.deck_name,
+          v.deck_id,
+          v.date_created,
+          v.last_updated,
+          v.total_cards,
+          v.cards_due
+        ),
+      }));
+      // });
+    })
+    .catch((error) => console.log("error", error));
+}
+
 export const Deck: React.FC<DeckType> = (props) => {
   return (
     <div>

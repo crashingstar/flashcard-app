@@ -7,22 +7,14 @@ import Button from "@mui/material/Button";
 import CardActions from "@mui/material/CardActions";
 import Link from "@mui/material/Link";
 import { useParams } from "react-router-dom";
-import CardType, { createCardData } from "../shared/Card";
+import CardType, {
+  createCardData,
+  updateCardContent,
+  createNewCard,
+} from "../shared/Card";
+import DeckType, { Deck, createDeckData } from "../shared/Deck";
 
-export default interface DeckType {
-  deck_name: string;
-  deck_id: number;
-  date_created: string;
-  last_accessed: string;
-  total_cards: number;
-  cards_due: number;
-}
-
-// type State = {
-//   result: CardType[];
-// };
-
-const initialState: { [key: number]: CardType } = {};
+const initialCardState: { [key: number]: CardType } = {};
 
 function Item(props: BoxProps) {
   const { sx, ...other } = props;
@@ -48,35 +40,8 @@ function Item(props: BoxProps) {
   );
 }
 
-export function createDeckData(
-  deck_name: string,
-  deck_id: number,
-  date_created: string,
-  last_accessed: string,
-  total_cards: number,
-  cards_due: number
-) {
-  if (last_accessed == null) {
-    last_accessed = "NA";
-  }
-  if (total_cards == null) {
-    total_cards = 0;
-  }
-  if (cards_due == null) {
-    cards_due = 0;
-  }
-  return {
-    deck_name: deck_name,
-    deck_id: deck_id,
-    date_created: date_created,
-    last_accessed: last_accessed,
-    total_cards: total_cards,
-    cards_due: cards_due,
-  } as DeckType;
-}
-
 export const EditDeck: React.FC<DeckType> = (props) => {
-  const [cardData, setCardData] = React.useState(initialState);
+  const [cardData, setCardData] = React.useState(initialCardState);
   const [isLoading, setIsLoading] = React.useState(true);
   let { deckId } = useParams(); // Unpacking and retrieve id
 
@@ -115,33 +80,7 @@ export const EditDeck: React.FC<DeckType> = (props) => {
       .catch((error) => console.log("error", error));
   }
 
-  const updateCardContent = (card_id: number, front: string, back: string) => {
-    var formdata = new FormData();
-    formdata.append("deck_id", String(deckId));
-    formdata.append("card_id", String(card_id));
-    formdata.append("user_id", "1");
-    formdata.append("front", front);
-    formdata.append("back", back);
-
-    var requestOptions = {
-      method: "POST",
-      body: formdata,
-    };
-
-    fetch("http://127.0.0.1:5000/card/update_card_details", requestOptions)
-      .then((response) => response.text())
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((error) => console.log("error", error));
-  };
-
-  function editCardData(
-    e: any,
-    cardInfo: CardType,
-    ind: number,
-    attribute: string
-  ) {
+  function editCardData(e: any, cardInfo: CardType, attribute: string) {
     setCardData((prevState) => ({
       ...prevState,
       [cardInfo.card_id]:
@@ -169,6 +108,7 @@ export const EditDeck: React.FC<DeckType> = (props) => {
             sx={{ gridColumnStart: "2", gridColumnEnd: "4" }}
             label="Deck Name"
             color="primary"
+            value={props.deck_name}
             focused
           />
           <Item />
@@ -183,48 +123,59 @@ export const EditDeck: React.FC<DeckType> = (props) => {
             Flash-cards:
           </Box>
         </CardContent>
-
-        {Object.entries(cardData).map(([card_id, cardInfo]) => (
+        <CardContent>
+          {Object.entries(cardData).map(([card_id, cardInfo]) => (
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(4, 1fr)",
+              }}
+            >
+              <Item sx={{ textAlign: "right" }}>Id:{card_id}</Item>
+              <TextField
+                label="Front"
+                color="primary"
+                value={cardInfo.front}
+                onChange={(e) => editCardData(e, cardInfo, "front")}
+                focused
+              />
+              <TextField
+                label="Back"
+                color="primary"
+                value={cardInfo.back}
+                onChange={(e) => editCardData(e, cardInfo, "back")}
+                focused
+              />
+              <Button
+                sx={{ width: "20%" }}
+                variant="contained"
+                onClick={() => updateCardContent(cardInfo)}
+              >
+                Save
+              </Button>
+            </Box>
+          ))}
           <Box
             sx={{
               display: "grid",
               gridTemplateColumns: "repeat(4, 1fr)",
             }}
           >
-            <Item sx={{ textAlign: "right" }}>{cardInfo.card_id}</Item>
-            <TextField
-              label="Front"
-              color="primary"
-              value={cardInfo.front}
-              onChange={(e) =>
-                editCardData(e, cardInfo, cardInfo.card_id, "front")
-              }
-              focused
-            />
-            <TextField
-              label="Back"
-              color="primary"
-              value={cardInfo.back}
-              onChange={(e) =>
-                editCardData(e, cardInfo, cardInfo.card_id, "back")
-              }
-              focused
-            />
             <Button
-              sx={{ width: "20%" }}
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(4, 1fr)",
+                gridColumnStart: "2",
+                gridColumnEnd: "4",
+              }}
               variant="contained"
-              onClick={() =>
-                updateCardContent(
-                  cardInfo.card_id,
-                  cardInfo.front,
-                  cardInfo.back
-                )
-              }
+              size="large"
+              onClick={() => createNewCard(deckId!, setCardData)}
             >
-              Save
+              Add Card
             </Button>
           </Box>
-        ))}
+        </CardContent>
 
         <CardActions>
           <Button variant="contained" size="large">
