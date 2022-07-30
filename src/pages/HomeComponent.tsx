@@ -35,6 +35,7 @@ export default function BasicTable() {
               createDeckData(
                 v.deck_name,
                 v.deck_id,
+                v.user_id,
                 v.date_created,
                 v.last_updated,
                 v.total_cards,

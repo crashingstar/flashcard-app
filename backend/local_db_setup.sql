@@ -28,6 +28,7 @@ CREATE TABLE deck (
 
 CREATE TABLE card (
   `card_id` int  NOT NULL AUTO_INCREMENT,
+  `user_id` int,
   `deck_id` int,
   `front` varchar(45),
   `back` varchar(45),
@@ -37,9 +38,10 @@ CREATE TABLE card (
   `learning_status` int DEFAULT 1,
   `interval` double DEFAULT 1,
   `ease_factor` double DEFAULT 2.5,
-  PRIMARY KEY (`card_id`),
+  PRIMARY KEY (`card_id`,`user_id`),
   UNIQUE KEY `front_deck_id_uniq` (`front`,`deck_id`),
-  FOREIGN KEY (`deck_id`) REFERENCES deck(`deck_id`)
+  FOREIGN KEY (`deck_id`) REFERENCES deck(`deck_id`),
+  FOREIGN KEY (`user_id`) REFERENCES user(`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 drop procedure if exists create_data;
@@ -53,7 +55,7 @@ declare counter int unsigned default 1;
   while counter < max_val do
 INSERT INTO `user`( `username`, `password`,`user_type`,`email`) VALUES (CONCAT('user',counter), CONCAT('password',counter),'user', CONCAT('user',counter,'@gmail.com'));
 INSERT INTO `deck`( `deck_name`, `user_id`,`accessibility`,`date_created`) VALUES (CONCAT('deck',counter), counter,0, '2020-01-19');
-INSERT INTO `card`( `deck_id`, `front`,`back`,`date_created`) VALUES (1,CONCAT('card_front_',counter),CONCAT('card_back_',counter),CURDATE());
+INSERT INTO `card`(`user_id`, `deck_id`, `front`,`back`,`date_created`) VALUES (counter,counter,CONCAT('card_front_',counter),CONCAT('card_back_',counter),CURDATE());
 
 set counter=counter+1;
   end while;

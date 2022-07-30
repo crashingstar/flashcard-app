@@ -10,11 +10,22 @@ import Box, { BoxProps } from "@mui/material/Box";
 export default interface DeckType {
   deck_name: string;
   deck_id: number;
+  user_id: number;
   date_created: string;
   last_accessed: string;
   total_cards: number;
   cards_due: number;
 }
+
+export const initialState: DeckType = {
+  deck_name: "initial_name",
+  deck_id: -1,
+  user_id: -1,
+  date_created: "NA",
+  last_accessed: "NA",
+  total_cards: -1,
+  cards_due: -1,
+};
 
 function Item(props: BoxProps) {
   const { sx, ...other } = props;
@@ -43,6 +54,7 @@ function Item(props: BoxProps) {
 export function createDeckData(
   deck_name: string,
   deck_id: number,
+  user_id: number,
   date_created: string,
   last_accessed: string,
   total_cards: number,
@@ -60,11 +72,31 @@ export function createDeckData(
   return {
     deck_name: deck_name,
     deck_id: deck_id,
+    user_id: user_id,
     date_created: date_created,
     last_accessed: last_accessed,
     total_cards: total_cards,
     cards_due: cards_due,
   } as DeckType;
+}
+
+export function updateDeckDetails(deckInfo: DeckType) {
+  var formdata = new FormData();
+  formdata.append("deck_id", String(deckInfo.deck_id));
+  formdata.append("user_id", String(deckInfo.user_id));
+  formdata.append("deck_name", String(deckInfo.deck_name));
+
+  var requestOptions = {
+    method: "POST",
+    body: formdata,
+  };
+
+  fetch("http://127.0.0.1:5000/deck/update_deck_details", requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((error) => console.log("error", error));
 }
 
 export function GetDeckDetails(deckId: any, setState: any) {
@@ -81,17 +113,17 @@ export function GetDeckDetails(deckId: any, setState: any) {
       console.log(result);
       // Object.entries(JSON.parse(result)).forEach(([k, unknown_v]) => {
       let v = JSON.parse(result) as any;
-      setState(() => ({
-        result: createDeckData(
+      setState(() =>
+        createDeckData(
           v.deck_name,
           v.deck_id,
+          v.user_id,
           v.date_created,
           v.last_updated,
           v.total_cards,
           v.cards_due
-        ),
-      }));
-      // });
+        )
+      );
     })
     .catch((error) => console.log("error", error));
 }

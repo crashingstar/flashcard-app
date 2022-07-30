@@ -61,10 +61,14 @@ export function updateCardContent(cardInfo: CardType) {
     .catch((error) => console.log("error", error));
 }
 
-export function createNewCard(deck_id: string, setCardData: any) {
+export function createNewCard(
+  deck_id: string,
+  user_id: string,
+  setCardData: any
+) {
   var formdata = new FormData();
   formdata.append("deck_id", deck_id);
-
+  formdata.append("user_id", user_id);
   var requestOptions = {
     method: "POST",
     body: formdata,

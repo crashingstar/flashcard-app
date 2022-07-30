@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import DeckType, { GetDeckDetails } from "../component/shared/Deck";
+import DeckType, {
+  GetDeckDetails,
+  initialState,
+  updateDeckDetails,
+} from "../component/shared/Deck";
 import { EditDeck, Item } from "../component/shared/EditDeck";
 import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-
-const initialState: DeckType = {
-  deck_name: "initial_name",
-  deck_id: -1,
-  date_created: "NA",
-  last_accessed: "NA",
-  total_cards: -1,
-  cards_due: -1,
-};
 
 function EditDeckComponent() {
   const [deckState, setDeckState] = useState(initialState);
@@ -55,7 +50,7 @@ function EditDeckComponent() {
             <Button
               sx={{ width: "20%" }}
               variant="contained"
-              // onClick={() => updateDeckData(deckState)}
+              onClick={() => updateDeckDetails(deckState)}
             >
               Save
             </Button>

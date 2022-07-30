@@ -154,7 +154,9 @@ export const EditDeck: React.FC<DeckType> = (props) => {
               }}
               variant="contained"
               size="large"
-              onClick={() => createNewCard(deckId!, setCardData)}
+              onClick={() =>
+                createNewCard(deckId!, String(props.user_id), setCardData)
+              }
             >
               Add Card
             </Button>
@@ -163,8 +165,13 @@ export const EditDeck: React.FC<DeckType> = (props) => {
 
         <CardActions>
           <Button variant="contained" size="large">
-            <Link color="inherit" href={`/deck/review/${props.deck_id}`}>
+            <Link color="inherit" href={`/deck/${props.deck_id}`}>
               Back
+            </Link>
+          </Button>
+          <Button variant="contained" size="large">
+            <Link color="inherit" href={`/deck/review/${props.deck_id}`}>
+              Review
             </Link>
           </Button>
         </CardActions>

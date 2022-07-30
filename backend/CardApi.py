@@ -44,17 +44,18 @@ def get_deck_all_card():
 def create_card():
     if request.method == 'POST':
         deck_id = request.form.get('deck_id')
-
+        user_id = request.form.get('user_id')
     else:
         return "use a POST request"
     dt_string = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     cur = mysql.connection.cursor()
     try:
         cur.execute(
-            "INSERT INTO card(deck_id, front, back, date_created) VALUES (%s, %s, %s, %s)", (deck_id, None, None, dt_string))
+            "INSERT INTO card(user_id,deck_id, front, back, date_created) VALUES (%s,%s, %s, %s, %s)", (user_id,deck_id, None, None, dt_string))
         cur.execute(
             "SELECT * FROM card WHERE card_id=(SELECT LAST_INSERT_ID())")
         data = parse_one_row_result(cur)
+        print(data)
     except Exception as e:
         return str(e)
     finally:
