@@ -57,7 +57,7 @@ export const EditDeck: React.FC<DeckType> = (props) => {
       .then((response) => response.text())
       .then((result) => {
         Object.entries(JSON.parse(result)).forEach(([k, unknown_card]) => {
-          let card = unknown_card as any;
+          let card = unknown_card as CardType;
           setCardData((prevState) => ({
             ...prevState,
             [card.card_id]: createCardData(
@@ -66,6 +66,7 @@ export const EditDeck: React.FC<DeckType> = (props) => {
               card.card_status,
               card.date_created,
               card.deck_id,
+              card.user_id,
               card.ease_factor,
               card.front,
               card.interval,

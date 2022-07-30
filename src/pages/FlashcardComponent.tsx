@@ -39,6 +39,7 @@ export default function Flashcard() {
                 card.card_status,
                 card.date_created,
                 card.deck_id,
+                card.user_id,
                 card.ease_factor,
                 card.front,
                 card.interval,

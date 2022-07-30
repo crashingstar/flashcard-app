@@ -30,7 +30,6 @@ def create_deck():
 
     return {'deck_id': get_deck_id(deck_name, user_id)}
 
-
 def get_deck_id(deck_name, user_id):
     cur = mysql.connection.cursor()
     try:
@@ -42,7 +41,6 @@ def get_deck_id(deck_name, user_id):
         return str(e)
     finally:
         cur.close()
-
 
 @deck_api.route('/get_deck_details', methods=['POST'])
 def get_deck_details():
@@ -128,7 +126,24 @@ def delete_deck():
         mysql.connection.commit()
         cur.close()
 
+@deck_api.route('/update_total_cards', methods=['POST'])
+def update_total_cards():
+    if request.method == 'POST':
+        pass
+    else:
+        return "use a POST request"
 
+    cur = mysql.connection.cursor()
+    try:
+        cur.execute('UPDATE deck SET deck.total_cards = (SELECT count(*) FROM card WHERE card.deck_id = deck.deck_id)')
+        return "Updated succesfully"
+    except Exception as e:
+        return str(e)
+    finally:
+        mysql.connection.commit()
+        cur.close()
+
+        
 @deck_api.route('/delete_all_user_deck', methods=['DELETE'])
 def delete_all_user_deck():
     if request.method == 'DELETE':

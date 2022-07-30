@@ -1,5 +1,6 @@
 import * as React from "react";
 import "./Card.css";
+import { updateTotalCardCount } from "./Deck";
 
 export default interface CardType {
   back: string;
@@ -7,6 +8,7 @@ export default interface CardType {
   card_status: string;
   date_created: string;
   deck_id: number;
+  user_id: number;
   ease_factor: number;
   front: string;
   interval: number;
@@ -20,6 +22,7 @@ export function createCardData(
   card_status: string,
   date_created: string,
   deck_id: number,
+  user_id: number,
   ease_factor: number,
   front: string,
   interval: number,
@@ -32,6 +35,7 @@ export function createCardData(
     card_status: card_status,
     date_created: date_created,
     deck_id: deck_id,
+    user_id: user_id,
     ease_factor: ease_factor,
     front: front,
     interval: interval,
@@ -44,7 +48,7 @@ export function updateCardContent(cardInfo: CardType) {
   var formdata = new FormData();
   formdata.append("deck_id", String(cardInfo.deck_id));
   formdata.append("card_id", String(cardInfo.card_id));
-  formdata.append("user_id", "1");
+  formdata.append("user_id", String(cardInfo.user_id));
   formdata.append("front", cardInfo.front);
   formdata.append("back", cardInfo.back);
 
@@ -79,8 +83,6 @@ export function createNewCard(
     .then((result) => {
       console.log(result);
       let card = JSON.parse(result);
-      console.log("log card id");
-      console.log(card.card_id);
 
       setCardData((prevState: { [key: number]: CardType }) => ({
         ...prevState,
@@ -90,6 +92,7 @@ export function createNewCard(
           card.card_status,
           card.date_created,
           card.deck_id,
+          card.user_id,
           card.ease_factor,
           card.front,
           card.interval,
@@ -97,6 +100,7 @@ export function createNewCard(
           card.next_accessed
         ) as CardType,
       }));
+      updateTotalCardCount();
     })
     .catch((error) => console.log("error", error));
 }

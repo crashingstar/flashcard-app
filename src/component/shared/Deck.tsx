@@ -99,6 +99,19 @@ export function updateDeckDetails(deckInfo: DeckType) {
     .catch((error) => console.log("error", error));
 }
 
+export function updateTotalCardCount() {
+  var requestOptions = {
+    method: "POST",
+  };
+
+  fetch("http://127.0.0.1:5000/deck/update_total_cards", requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((error) => console.log("error", error));
+}
+
 export function GetDeckDetails(deckId: any, setState: any) {
   var formdata = new FormData();
   formdata.append("deck_id", deckId);
