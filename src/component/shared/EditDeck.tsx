@@ -1,11 +1,11 @@
 import * as React from "react";
-import Link from "@mui/material/Link";
-
-import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Box, { BoxProps } from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import CardActions from "@mui/material/CardActions";
+import Link from "@mui/material/Link";
 
 export default interface DeckType {
   deck_name: string;
@@ -67,10 +67,10 @@ export function createDeckData(
   } as DeckType;
 }
 
-export const Deck: React.FC<DeckType> = (props) => {
+export const EditDeck: React.FC<DeckType> = (props) => {
   return (
     <div>
-      <Card sx={{ maxWidth: "20%" }}>
+      <Card sx={{ maxWidth: "100%" }}>
         <CardContent
           sx={{
             display: "grid",
@@ -85,8 +85,23 @@ export const Deck: React.FC<DeckType> = (props) => {
           <Item>{props.cards_due}</Item>
           <Item sx={{ textAlign: "right" }}>Date created: </Item>
           <Item>{props.date_created}</Item>
+          <Item sx={{ textAlign: "right" }}>Deck Name: </Item>
+          <TextField label="Deck Name" color="secondary" focused />
         </CardContent>
-
+        <CardContent
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+          }}
+        >
+          <Item sx={{ textAlign: "right" }}>Deck Name: </Item>
+          <TextField label="Deck Name" color="secondary" focused />
+          <Item />
+          <Item />
+          <Item sx={{ textAlign: "right" }}>Flash Card: </Item>
+          <TextField label="Front" color="secondary" focused />
+          <TextField label="Back" color="secondary" focused />
+        </CardContent>
         <CardActions>
           <Button variant="contained" size="large">
             <Link color="inherit" href={`/deck/review/${props.deck_id}`}>
