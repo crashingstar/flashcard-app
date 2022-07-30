@@ -18,13 +18,11 @@ export default interface DeckType {
   cards_due: number;
 }
 
-type State = {
-  result: CardType[];
-};
+// type State = {
+//   result: CardType[];
+// };
 
-const initialState: State = {
-  result: [],
-};
+const initialState: { [key: number]: CardType } = {};
 
 function Item(props: BoxProps) {
   const { sx, ...other } = props;
@@ -96,21 +94,19 @@ export const EditDeck: React.FC<DeckType> = (props) => {
         Object.entries(JSON.parse(result)).forEach(([k, unknown_card]) => {
           let card = unknown_card as any;
           setCardData((prevState) => ({
-            result: [
-              ...prevState.result,
-              createCardData(
-                card.back,
-                card.card_id,
-                card.card_status,
-                card.date_created,
-                card.deck_id,
-                card.ease_factor,
-                card.front,
-                card.interval,
-                card.learning_status,
-                card.next_accessed
-              ),
-            ],
+            ...prevState,
+            [card.card_id]: createCardData(
+              card.back,
+              card.card_id,
+              card.card_status,
+              card.date_created,
+              card.deck_id,
+              card.ease_factor,
+              card.front,
+              card.interval,
+              card.learning_status,
+              card.next_accessed
+            ),
           }));
         });
 
@@ -139,6 +135,21 @@ export const EditDeck: React.FC<DeckType> = (props) => {
       })
       .catch((error) => console.log("error", error));
   };
+
+  function editCardData(
+    e: any,
+    cardInfo: CardType,
+    ind: number,
+    attribute: string
+  ) {
+    setCardData((prevState) => ({
+      ...prevState,
+      [cardInfo.card_id]:
+        attribute == "front"
+          ? ({ ...cardInfo, front: e.target.value } as CardType)
+          : ({ ...cardInfo, back: e.target.value } as CardType),
+    }));
+  }
 
   React.useEffect(() => {
     getAllCardDetails(deckId);
@@ -173,7 +184,7 @@ export const EditDeck: React.FC<DeckType> = (props) => {
           </Box>
         </CardContent>
 
-        {cardData.result.map((cardInfo, ind) => (
+        {Object.entries(cardData).map(([card_id, cardInfo]) => (
           <Box
             sx={{
               display: "grid",
@@ -186,24 +197,7 @@ export const EditDeck: React.FC<DeckType> = (props) => {
               color="primary"
               value={cardInfo.front}
               onChange={(e) =>
-                setCardData((prevState) => ({
-                  result: [
-                    ...prevState.result.slice(0, ind),
-                    createCardData(
-                      cardInfo.back,
-                      cardInfo.card_id,
-                      cardInfo.card_status,
-                      cardInfo.date_created,
-                      cardInfo.deck_id,
-                      cardInfo.ease_factor,
-                      e.target.value,
-                      cardInfo.interval,
-                      cardInfo.learning_status,
-                      cardInfo.next_accessed
-                    ),
-                    ...prevState.result.slice(ind + 1, prevState.result.length),
-                  ],
-                }))
+                editCardData(e, cardInfo, cardInfo.card_id, "front")
               }
               focused
             />
@@ -212,24 +206,7 @@ export const EditDeck: React.FC<DeckType> = (props) => {
               color="primary"
               value={cardInfo.back}
               onChange={(e) =>
-                setCardData((prevState) => ({
-                  result: [
-                    ...prevState.result.slice(0, ind),
-                    createCardData(
-                      e.target.value,
-                      cardInfo.card_id,
-                      cardInfo.card_status,
-                      cardInfo.date_created,
-                      cardInfo.deck_id,
-                      cardInfo.ease_factor,
-                      cardInfo.front,
-                      cardInfo.interval,
-                      cardInfo.learning_status,
-                      cardInfo.next_accessed
-                    ),
-                    ...prevState.result.slice(ind + 1, prevState.result.length),
-                  ],
-                }))
+                editCardData(e, cardInfo, cardInfo.card_id, "back")
               }
               focused
             />
