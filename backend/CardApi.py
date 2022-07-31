@@ -63,7 +63,6 @@ def create_card():
         cur.close()
     return data
 
-
 @card_api.route('/delete_card', methods=['DELETE'])
 def delete_card():
     if request.method == 'DELETE':

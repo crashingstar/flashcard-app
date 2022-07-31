@@ -23,7 +23,7 @@ CREATE TABLE deck (
   `cards_due` int DEFAULT NULL,
   PRIMARY KEY (`deck_id`),
   UNIQUE KEY `deck_name_user_id_uniq` (`deck_name`,`user_id`),
-  FOREIGN KEY (`user_id`) REFERENCES user(`user_id`)
+  FOREIGN KEY (`user_id`) REFERENCES user(`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE card (
@@ -40,8 +40,8 @@ CREATE TABLE card (
   `ease_factor` double DEFAULT 2.5,
   PRIMARY KEY (`card_id`,`user_id`),
   UNIQUE KEY `front_deck_id_uniq` (`front`,`deck_id`),
-  FOREIGN KEY (`deck_id`) REFERENCES deck(`deck_id`),
-  FOREIGN KEY (`user_id`) REFERENCES user(`user_id`)
+  FOREIGN KEY (`deck_id`) REFERENCES deck(`deck_id`) ON DELETE CASCADE, 
+  FOREIGN KEY (`user_id`) REFERENCES user(`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 drop procedure if exists create_data;

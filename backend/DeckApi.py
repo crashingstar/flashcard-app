@@ -111,7 +111,6 @@ def delete_deck():
         user_id = request.form.get('user_id')
     else:
         return "use a DELETE request"
-
     cur = mysql.connection.cursor()
     try:
         if verify_user_id(deck_id, user_id) == True:

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "@mui/material/Link";
 
 import Button from "@mui/material/Button";
@@ -6,6 +6,7 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Box, { BoxProps } from "@mui/material/Box";
+import { useParams } from "react-router-dom";
 
 export default interface DeckType {
   deck_name: string;
@@ -141,7 +142,31 @@ export function GetDeckDetails(deckId: any, setState: any) {
     .catch((error) => console.log("error", error));
 }
 
-export const Deck: React.FC<DeckType> = (props) => {
+export function DeleteDeck(deckInfo: DeckType, setState: any) {
+  var formdata = new FormData();
+  formdata.append("deck_id", String(deckInfo.deck_id));
+  formdata.append("user_id", String(deckInfo.user_id));
+
+  var requestOptions = {
+    method: "DELETE",
+    body: formdata,
+  };
+  fetch("http://127.0.0.1:5000/deck/delete_deck", requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+      // setState(() => {});
+    })
+    .catch((error) => console.log("error", error));
+}
+
+export function DeckComponent() {
+  const [deckInfo, setDeckState] = useState(initialState);
+  let { deckId } = useParams(); // Unpacking and retrieve id
+
+  useEffect(() => {
+    GetDeckDetails(deckId, setDeckState);
+  }, []);
+
   return (
     <div>
       <Card sx={{ maxWidth: "20%" }}>
@@ -152,31 +177,35 @@ export const Deck: React.FC<DeckType> = (props) => {
           }}
         >
           <Item sx={{ textAlign: "right" }}>Deck Name: </Item>
-          <Item>{props.deck_name}</Item>
+          <Item>{deckInfo.deck_name}</Item>
           <Item sx={{ textAlign: "right" }}>Total Flash card: </Item>
-          <Item>{props.total_cards}</Item>
+          <Item>{deckInfo.total_cards}</Item>
           <Item sx={{ textAlign: "right" }}>Cards Due: </Item>
-          <Item>{props.cards_due}</Item>
+          <Item>{deckInfo.cards_due}</Item>
           <Item sx={{ textAlign: "right" }}>Date created: </Item>
-          <Item>{props.date_created}</Item>
+          <Item>{deckInfo.date_created}</Item>
         </CardContent>
 
         <CardActions>
           <Button variant="contained" size="large">
-            <Link color="inherit" href={`/deck/review/${props.deck_id}`}>
+            <Link color="inherit" href={`/deck/review/${deckInfo.deck_id}`}>
               Review
             </Link>
           </Button>
           <Button variant="contained" size="large">
-            <Link color="inherit" href={`/deck/edit/${props.deck_id}`}>
+            <Link color="inherit" href={`/deck/edit/${deckInfo.deck_id}`}>
               Edit
             </Link>
           </Button>
-          <Button variant="contained" size="large">
+          <Button
+            variant="contained"
+            size="large"
+            onClick={() => DeleteDeck(deckInfo, setDeckState)}
+          >
             <Link color="inherit">Delete</Link>
-          </Button>{" "}
+          </Button>
         </CardActions>
       </Card>
     </div>
   );
-};
+}

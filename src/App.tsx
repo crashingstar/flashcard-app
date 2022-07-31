@@ -1,6 +1,6 @@
 import * as React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Deck from "./pages/DeckComponent";
+import { DeckComponent } from "./component/shared/Deck";
 import EditDeck from "./pages/EditDeckComponent";
 import Home from "./pages/HomeComponent";
 import Login from "./pages/LoginComponent";
@@ -19,7 +19,7 @@ function App() {
         <Route path="register" element={<Register />} />
         <Route path="home" element={<Home />} />
         <Route path="deck">
-          <Route path=":deckId" element={<Deck />} />
+          <Route path=":deckId" element={<DeckComponent />} />
           <Route path="review">
             <Route path=":deckId" element={<Flashcard />} />
           </Route>
