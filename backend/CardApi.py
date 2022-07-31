@@ -71,9 +71,7 @@ def delete_card():
         user_id = request.form.get('user_id')
     else:
         return "use a DELETE request"
-    print(card_id)
-    print(deck_id)
-    print(user_id)
+
     cur = mysql.connection.cursor()
     try:
         if verify_user_id(deck_id, user_id) == True:

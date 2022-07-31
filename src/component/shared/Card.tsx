@@ -106,9 +106,6 @@ export function createNewCard(
 }
 
 export function DeleteCard(cardInfo: CardType, setCardData: any) {
-  console.log(cardInfo.deck_id);
-  console.log(cardInfo.card_id);
-  console.log(cardInfo.user_id);
   var formdata = new FormData();
   formdata.append("deck_id", String(cardInfo.deck_id));
   formdata.append("card_id", String(cardInfo.card_id));
@@ -124,12 +121,10 @@ export function DeleteCard(cardInfo: CardType, setCardData: any) {
       setCardData(
         ({
           [cardInfo.card_id]: undefined,
-          ...prevState
+          ...restOfData
         }: {
-          [key: number]: CardType;
-        }) => ({
-          ...prevState,
-        })
+          [key: number]: CardType; //Defining the type of the state - which is a dictionary with CardType as the value
+        }) => restOfData
       );
 
       updateTotalCardCount();
