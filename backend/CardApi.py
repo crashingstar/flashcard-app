@@ -31,8 +31,9 @@ def get_deck_all_card():
     cur = mysql.connection.cursor()
     try:
         cur.execute(
-            "SELECT * FROM card WHERE deck_id=%s", (deck_id))
+            "SELECT * FROM card WHERE deck_id=%s", (deck_id,))
         data = parse_all_result(cur)
+
     except Exception as e:
         return str(e)
     finally:
@@ -55,7 +56,6 @@ def create_card():
         cur.execute(
             "SELECT * FROM card WHERE card_id=(SELECT LAST_INSERT_ID())")
         data = parse_one_row_result(cur)
-        print(data)
     except Exception as e:
         return str(e)
     finally:
