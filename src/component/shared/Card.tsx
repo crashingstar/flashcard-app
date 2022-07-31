@@ -105,6 +105,38 @@ export function createNewCard(
     .catch((error) => console.log("error", error));
 }
 
+export function DeleteCard(cardInfo: CardType, setCardData: any) {
+  console.log(cardInfo.deck_id);
+  console.log(cardInfo.card_id);
+  console.log(cardInfo.user_id);
+  var formdata = new FormData();
+  formdata.append("deck_id", String(cardInfo.deck_id));
+  formdata.append("card_id", String(cardInfo.card_id));
+  formdata.append("user_id", String(cardInfo.user_id));
+
+  var requestOptions = {
+    method: "DELETE",
+    body: formdata,
+  };
+  fetch("http://127.0.0.1:5000/card/delete_card", requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+      setCardData(
+        ({
+          [cardInfo.card_id]: undefined,
+          ...prevState
+        }: {
+          [key: number]: CardType;
+        }) => ({
+          ...prevState,
+        })
+      );
+
+      updateTotalCardCount();
+    })
+    .catch((error) => console.log("error", error));
+}
+
 export const Card: React.FC<CardType> = (props) => {
   console.log(props);
   return (

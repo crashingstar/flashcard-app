@@ -11,6 +11,7 @@ import CardType, {
   createCardData,
   updateCardContent,
   createNewCard,
+  DeleteCard,
 } from "../shared/Card";
 import DeckType from "../shared/Deck";
 
@@ -131,13 +132,22 @@ export const EditDeck: React.FC<DeckType> = (props) => {
                 onChange={(e) => editCardData(e, cardInfo, "back")}
                 focused
               />
-              <Button
-                sx={{ width: "20%" }}
-                variant="contained"
-                onClick={() => updateCardContent(cardInfo)}
-              >
-                Save
-              </Button>
+              <Box>
+                <Button
+                  sx={{ width: "20%", height: "100%" }}
+                  variant="contained"
+                  onClick={() => updateCardContent(cardInfo)}
+                >
+                  Save
+                </Button>
+                <Button
+                  sx={{ width: "20%", height: "100%" }}
+                  variant="contained"
+                  onClick={() => DeleteCard(cardInfo, setCardData)}
+                >
+                  Delete
+                </Button>
+              </Box>
             </Box>
           ))}
           <Box
